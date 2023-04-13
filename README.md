@@ -1,5 +1,5 @@
 
-## Challenge 07 - Search Of Carnival - <a href="https://boracodar.dev/#">#BoraCodar</a>
+## Challenge 07 - Search Of Carnival - <a href="https://www.rocketseat.com.br/boracodar/desafios-anteriores/um-site-para-encontrar-seu-bloco-no-carnaval-desafio-07">#BoraCodar</a>
 I developed a screen where a user visualizes and registers carnival blocks.
 
 <img width="807" alt="image" src="/public/github/search.png">
