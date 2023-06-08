@@ -10,15 +10,57 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model CarnivalBlock {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  state       String
-  imageName   String   @map("image_name")
-  positionLng String   @map("position_lng")
-  positionLat String   @map("position_lat")
-  description String   @default("")
-  createdAt   DateTime @default(now())
+model Client {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  name              String
+  nameFantasy       String
+  phone             String
+  email             String
+  cnpj              String
+  responsible       String
+  stateRegistration String
+  observation       String
+  createdAt         DateTime @default(now())
+  address           Address?
+  Order             Order[]
+}
 
-  @@map("carnial_blocks")
+model Address {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  street   String
+  district String
+  number   String
+  city     String
+  state    String
+  country  String
+  client   Client @relation(fields: [clientId], references: [id])
+  clientId String @unique @db.ObjectId
+}
+
+model Order {
+  id                String           @id @default(auto()) @map("_id") @db.ObjectId
+  name              String
+  nameFantasy       String
+  phone             String
+  email             String
+  cnpj              String
+  responsible       String
+  stateRegistration String
+  observation       String
+  createdAt         DateTime         @default(now())
+  deliveryAddress   DeliveryAddress?
+  Client            Client?          @relation(fields: [clientId], references: [id])
+  clientId          String?          @db.ObjectId
+}
+
+model DeliveryAddress {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  street   String
+  district String
+  number   String
+  city     String
+  state    String
+  country  String
+  order    Order  @relation(fields: [orderId], references: [id])
+  orderId  String @unique @db.ObjectId
 }

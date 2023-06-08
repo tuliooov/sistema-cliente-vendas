@@ -1,10 +1,10 @@
 export default function Head() {
   return (
     <>
-      <title>Find Your Block</title>
+      <title>DT Chapa Forte</title>
       <meta content="width=device-width, initial-scale=1" name="viewport" />
-      <meta name="description" content="Find the best carnival blocks of 2023." />
+      <meta name="description" content="Cadastro de clientes e de vendas." />
       <link rel="icon" type="image/png" href="./favicon.png" />
     </>
-  )
+  );
 }
