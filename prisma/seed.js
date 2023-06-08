@@ -21,21 +21,6 @@ async function main() {
       address: true, // Include the created profile in the response
     },
   });
-  // await prisma.client.create({
-  //   data: {
-  //     name: "Marco Tulio",
-  //     email: "marcotuliovaleriano2014@gmail.com",
-  //     phone: "31999999999",
-  //     address: prisma.address.create({
-  //       street: "Rodrigues caldas",
-  //       number: "112",
-  //       district: "Bom pastor",
-  //       city: "Divinopolis",
-  //       state: "MG",
-  //       country: "Divinopolis",
-  //     }),
-  //   },
-  // });
 }
 
 main()

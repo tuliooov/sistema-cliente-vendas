@@ -1,7 +1,12 @@
 "use client";
 
 import * as React from "react";
+import TableOrders from "./components/TableOrders";
 
-export default function Pedidos() {
-  return <div>Pedidos</div>;
+export default function Orders() {
+  return (
+    <div>
+      <TableOrders />
+    </div>
+  );
 }

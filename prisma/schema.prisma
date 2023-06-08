@@ -20,47 +20,52 @@ model Client {
   responsible       String
   stateRegistration String
   observation       String
-  createdAt         DateTime @default(now())
   address           Address?
-  Order             Order[]
+  orders            Order[]
+  createdAt         DateTime @default(now())
+}
+
+model Seller {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  observation String
+  orders      Order[]
+  createdAt   DateTime @default(now())
 }
 
 model Address {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  street   String
-  district String
-  number   String
-  city     String
-  state    String
-  country  String
-  client   Client @relation(fields: [clientId], references: [id])
-  clientId String @unique @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  street    String
+  district  String
+  number    String
+  city      String
+  state     String
+  country   String
+  client    Client   @relation(fields: [clientId], references: [id])
+  clientId  String   @unique @db.ObjectId
+  createdAt DateTime @default(now())
 }
 
 model Order {
-  id                String           @id @default(auto()) @map("_id") @db.ObjectId
-  name              String
-  nameFantasy       String
-  phone             String
-  email             String
-  cnpj              String
-  responsible       String
-  stateRegistration String
-  observation       String
-  createdAt         DateTime         @default(now())
-  deliveryAddress   DeliveryAddress?
-  Client            Client?          @relation(fields: [clientId], references: [id])
-  clientId          String?          @db.ObjectId
+  id              String           @id @default(auto()) @map("_id") @db.ObjectId
+  observation     String
+  deliveryAddress DeliveryAddress?
+  client          Client           @relation(fields: [clientId], references: [id])
+  clientId        String           @db.ObjectId
+  seller          Seller           @relation(fields: [sellerId], references: [id])
+  sellerId        String           @db.ObjectId
+  createdAt       DateTime         @default(now())
 }
 
 model DeliveryAddress {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  street   String
-  district String
-  number   String
-  city     String
-  state    String
-  country  String
-  order    Order  @relation(fields: [orderId], references: [id])
-  orderId  String @unique @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  street    String
+  district  String
+  number    String
+  city      String
+  state     String
+  country   String
+  order     Order    @relation(fields: [orderId], references: [id])
+  orderId   String   @unique @db.ObjectId
+  createdAt DateTime @default(now())
 }

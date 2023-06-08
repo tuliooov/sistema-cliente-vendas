@@ -17,17 +17,23 @@ export const MainListItems = () => (
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItemButton>
+    <ListItemButton component={Link} href="/clients">
+      <ListItemIcon>
+        <PeopleIcon />
+      </ListItemIcon>
+      <ListItemText primary="Clientes" />
+    </ListItemButton>
     <ListItemButton component={Link} href="/orders">
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
       <ListItemText primary="Pedidos" />
     </ListItemButton>
-    <ListItemButton component={Link} href="/clients">
+    <ListItemButton component={Link} href="/sellers">
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
-      <ListItemText primary="Clientes" />
+      <ListItemText primary="Representantes" />
     </ListItemButton>
   </React.Fragment>
 );

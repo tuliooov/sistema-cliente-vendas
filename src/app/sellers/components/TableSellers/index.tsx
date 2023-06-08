@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -13,12 +12,11 @@ import axios from "axios";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useEffect, useState } from "react";
 import { Button, CircularProgress, Grid, Typography } from "@mui/material";
-import { IClients } from "@/pages/api/clients";
-import ModalAddClient from "../ModalCrudClient";
+import { ISellers } from "@/pages/api/seller";
+import ModalAddSeller from "../ModalCrudSeller";
 import { formattedDate } from "@/utils/formatDate";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
-import Fingerprint from "@mui/icons-material/Fingerprint";
 import EditIcon from "@mui/icons-material/Edit";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -49,31 +47,31 @@ export interface IModal {
   };
 }
 
-export default function TableClientes() {
-  const [clients, setClients] = useState<IClients>();
+export default function TableSellers() {
+  const [sellers, setSellers] = useState<ISellers>();
   const [loading, setLoading] = useState(true);
   const [modalSettings, setModalSettings] = useState<IModal>({
     open: false,
   });
 
-  const fetchClients = async () => {
+  const fetchSellers = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("/api/clients");
-      setClients(response.data.data);
+      const response = await axios.get("/api/seller");
+      setSellers(response.data.data);
     } catch (error) {
-      console.warn("Get clients: ", error);
+      console.warn("Get sellers: ", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const refreshClients = () => {
-    fetchClients();
+  const refreshSellers = () => {
+    fetchSellers();
   };
 
   useEffect(() => {
-    fetchClients();
+    fetchSellers();
   }, []);
 
   const handleModalSettings = (value: IModal) => {
@@ -117,16 +115,16 @@ export default function TableClientes() {
       >
         <Grid item xs={6}>
           <Typography variant="h2" gutterBottom>
-            Clientes
+            Representantes
           </Typography>
         </Grid>
         <Grid item xs={6} textAlign="end">
           <Button variant="contained" onClick={handleAdd}>
-            Adicionar cliente
+            Adicionar representante
           </Button>
           {modalSettings.open && (
-            <ModalAddClient
-              refreshClients={refreshClients}
+            <ModalAddSeller
+              refreshSellers={refreshSellers}
               modalSettings={modalSettings}
               handleModalSettings={handleModalSettings}
             />
@@ -138,65 +136,47 @@ export default function TableClientes() {
           <CircularProgress />
         </>
       )}
-      {!loading && !!clients?.length && (
+      {!loading && !!sellers?.length && (
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
-                <StyledTableCell>Empresa</StyledTableCell>
-                <StyledTableCell align="right">Responsavel</StyledTableCell>
-                <StyledTableCell align="right">Telefone</StyledTableCell>
-                <StyledTableCell align="right">Email</StyledTableCell>
-                <StyledTableCell align="right">CPF/CNPJ</StyledTableCell>
+                <StyledTableCell>Nome</StyledTableCell>
+                <StyledTableCell align="right">Observação</StyledTableCell>
                 <StyledTableCell align="right">Data Cadastro</StyledTableCell>
                 <StyledTableCell align="right">Opções</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {clients.map(
-                ({
-                  id,
-                  nameFantasy,
-                  responsible,
-                  phone,
-                  email,
-                  cnpj,
-                  createdAt,
-                }) => (
-                  <StyledTableRow key={id}>
-                    <StyledTableCell component="th" scope="row">
-                      {nameFantasy}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      {responsible}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">{phone}</StyledTableCell>
-                    <StyledTableCell align="right">{email}</StyledTableCell>
-                    <StyledTableCell align="right">{cnpj}</StyledTableCell>
-                    <StyledTableCell align="right">
-                      {formattedDate(createdAt)}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      <Stack direction="row" spacing={1}>
-                        <IconButton
-                          aria-label="edit"
-                          color="error"
-                          onClick={handleEdit(id)}
-                        >
-                          <EditIcon />
-                        </IconButton>
-                        <IconButton
-                          aria-label="visibility"
-                          color="success"
-                          onClick={handleView(id)}
-                        >
-                          <VisibilityIcon />
-                        </IconButton>
-                      </Stack>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                )
-              )}
+              {sellers.map(({ id, name, observation, createdAt }) => (
+                <StyledTableRow key={id}>
+                  <StyledTableCell component="th" scope="row">
+                    {name}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">{observation}</StyledTableCell>
+                  <StyledTableCell align="right">
+                    {formattedDate(createdAt)}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">
+                    <Stack direction="row" spacing={1}>
+                      <IconButton
+                        aria-label="edit"
+                        color="error"
+                        onClick={handleEdit(id)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-label="visibility"
+                        color="success"
+                        onClick={handleView(id)}
+                      >
+                        <VisibilityIcon />
+                      </IconButton>
+                    </Stack>
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
