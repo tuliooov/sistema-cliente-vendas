@@ -115,12 +115,12 @@ export default function TableOrders() {
       >
         <Grid item xs={6}>
           <Typography variant="h2" gutterBottom>
-            Representantes
+            Pedidos
           </Typography>
         </Grid>
         <Grid item xs={6} textAlign="end">
           <Button variant="contained" onClick={handleAdd}>
-            Adicionar representante
+            Adicionar pedido
           </Button>
           {modalSettings.open && (
             <ModalAddOrder

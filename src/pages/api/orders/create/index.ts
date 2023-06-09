@@ -1,7 +1,7 @@
 import { NextApiHandler } from "next";
 import { parseBody } from "@/utils/parseBody";
 import prismaClient from "@/lib/prisma";
-import { ISchemaCrudClient } from "@/app/clients/components/ModalCrudClient/schema";
+import { ISchemaCrudOrder } from "@/app/orders/components/ModalCrudOrder/schema";
 
 export const config = {
   api: {
@@ -9,33 +9,33 @@ export const config = {
   },
 };
 
-type ICreateClient = ISchemaCrudClient;
+type ICreateOrder = ISchemaCrudOrder;
 
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "POST") {
     const requestBody = (await parseBody(req)) as any;
 
-    const { address, customer } = requestBody.fields as ICreateClient;
+    const { deliveryAddress, order } = requestBody.fields as ICreateOrder;
 
-    if (!customer || !address) {
+    if (!deliveryAddress || !order) {
       return res.status(200).json({ error: `Formulário incompleto.` });
     }
 
-    const createdUser = await prismaClient.client.create({
+    const createdOrder = await prismaClient.order.create({
       data: {
-        ...customer,
-        address: {
+        ...order,
+        deliveryAddress: {
           create: {
-            ...address,
+            ...deliveryAddress,
           },
         },
       },
       include: {
-        address: true,
+        deliveryAddress: true,
       },
     });
 
-    res.json({ done: "ok", data: createdUser });
+    res.json({ done: "ok", data: createdOrder });
   } else {
     res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
   }

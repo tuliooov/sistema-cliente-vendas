@@ -1,7 +1,7 @@
 import { NextApiHandler } from "next";
 import { parseBody } from "@/utils/parseBody";
 import prismaClient from "@/lib/prisma";
-import { ISchemaCrudClient } from "@/app/clients/components/ModalCrudClient/schema";
+import { ISchemaCrudOrder } from "@/app/orders/components/ModalCrudOrder/schema";
 
 export const config = {
   api: {
@@ -9,39 +9,39 @@ export const config = {
   },
 };
 
-type IUpdateClient = ISchemaCrudClient;
+type IUpdateOrder = ISchemaCrudOrder;
 
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "PUT") {
     const requestBody = (await parseBody(req)) as any;
 
-    const { address, customer } = requestBody.fields as IUpdateClient;
+    const { deliveryAddress, order } = requestBody.fields as IUpdateOrder;
 
-    const { id: idCustomer, ...restCustomer } = customer;
-    const { id: idAddress, ...restAddress } = address;
+    const { id: idOrder, ...restOrder } = order;
+    const { id: idDeliveryAddress, ...restDeliveryAddress } = deliveryAddress;
 
-    if (!idCustomer) {
-      return res.status(200).json({ error: `Cliente não identificado.` });
+    if (!idOrder) {
+      return res.status(200).json({ error: `Pedido não identificado.` });
     }
 
-    if (!customer || !address) {
+    if (!restOrder || !restDeliveryAddress) {
       return res.status(200).json({ error: `Formulário incompleto.` });
     }
 
-    const updatedUser = await prismaClient.client.update({
+    const updatedUser = await prismaClient.order.update({
       where: {
-        id: idCustomer,
+        id: idOrder,
       },
       data: {
-        ...restCustomer,
-        address: {
+        ...restOrder,
+        deliveryAddress: {
           update: {
-            ...restAddress,
+            ...restDeliveryAddress,
           },
         },
       },
       include: {
-        address: true,
+        deliveryAddress: true,
       },
     });
 

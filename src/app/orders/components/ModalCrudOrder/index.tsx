@@ -28,6 +28,7 @@ export default function ModalAddOrder({
 }: ModalAddOrderProps) {
   const methods = useForm<ISchemaCrudOrder>({
     resolver: zodResolver(schemaAddOrder),
+    mode: "all",
   });
 
   const sourceRef = useRef(axios.CancelToken.source());
@@ -78,12 +79,12 @@ export default function ModalAddOrder({
       try {
         setFetchingOrder(true);
         const response = await axios.get(`/api/orders/${id}`);
-        if (!response.data.data.id) new Error("Representante não encontrado");
+        if (!response.data.data.id) new Error("Pedido não encontrado");
         const order = response.data.data as IOrderComplete;
-        mapperOrderToForm(order, methods.setValue);
+        await mapperOrderToForm(order, methods.setValue);
+        setFetchingOrder(false);
       } catch (error) {
         console.warn("Get order: ", error);
-      } finally {
         setFetchingOrder(false);
       }
     },

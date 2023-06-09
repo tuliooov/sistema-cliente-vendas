@@ -23,6 +23,7 @@ const handler: NextApiHandler = async (req, res) => {
         .json({ error: `Não identificamos o ID do cliente.` });
     }
 
+    console.log(id);
     const response = await prismaClient.client.findUnique({
       where: {
         id: id as string,

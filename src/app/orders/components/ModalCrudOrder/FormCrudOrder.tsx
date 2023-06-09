@@ -7,6 +7,8 @@ import Container from "@mui/material/Container";
 import { Divider, Typography } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { ISchemaCrudOrder } from "./schema";
+import SelectClient from "./SelectClient";
+import SelectSeller from "./SelectSeller";
 
 interface FormCrudOrderProps {
   loading: boolean;
@@ -20,9 +22,11 @@ export default function FormCrudOrder({
   const {
     register,
     formState: { errors },
+    getValues,
   } = useFormContext<ISchemaCrudOrder>();
-
   const disabled = disabledDefault || loading;
+  console.log(getValues());
+
   return (
     <Container component="main">
       <CssBaseline />
@@ -36,32 +40,87 @@ export default function FormCrudOrder({
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
-              Representante
+              Pedido
+            </Typography>
+            <Divider />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <SelectClient disabledDefault={disabledDefault} loading={loading} />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <SelectSeller disabledDefault={disabledDefault} loading={loading} />
+          </Grid>
+          <Grid item xs={12} sm={12}>
+            <TextField
+              {...register("order.observation")}
+              error={!!errors.order?.observation}
+              helperText={errors.order?.observation?.message}
+              disabled={disabled}
+              id="observation"
+              fullWidth
+              multiline
+              label="Pedido"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="h6" gutterBottom>
+              Endereço
             </Typography>
             <Divider />
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
             <TextField
-              fullWidth
-              id="name"
-              label="Representante"
-              autoFocus
-              {...register("name")}
-              error={!!errors.name}
-              helperText={errors.name?.message}
+              {...register("deliveryAddress.street")}
+              error={!!errors.deliveryAddress?.street}
+              helperText={errors.deliveryAddress?.street?.message}
               disabled={disabled}
+              id="street"
+              fullWidth
+              label="Rua"
             />
           </Grid>
-          <Grid item xs={12} sm={12}>
+          <Grid item xs={12} sm={6} md={4}>
             <TextField
-              {...register("observation")}
-              error={!!errors.observation}
-              helperText={errors.observation?.message}
+              {...register("deliveryAddress.number")}
+              error={!!errors.deliveryAddress?.number}
+              helperText={errors.deliveryAddress?.number?.message}
               disabled={disabled}
-              id="observation"
+              id="number"
               fullWidth
-              multiline
-              label="Observação"
+              label="Numero"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <TextField
+              {...register("deliveryAddress.district")}
+              error={!!errors.deliveryAddress?.district}
+              helperText={errors.deliveryAddress?.district?.message}
+              disabled={disabled}
+              id="district"
+              fullWidth
+              label="Bairro"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <TextField
+              {...register("deliveryAddress.city")}
+              error={!!errors.deliveryAddress?.city}
+              helperText={errors.deliveryAddress?.city?.message}
+              disabled={disabled}
+              id="city"
+              fullWidth
+              label="Cidade"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <TextField
+              {...register("deliveryAddress.state")}
+              error={!!errors.deliveryAddress?.state}
+              helperText={errors.deliveryAddress?.state?.message}
+              disabled={disabled}
+              id="state"
+              fullWidth
+              label="Estado"
             />
           </Grid>
         </Grid>

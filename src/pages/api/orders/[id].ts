@@ -1,7 +1,7 @@
-import { IClient } from "./index";
+import { IOrder } from "./index";
 import { NextApiHandler } from "next";
 import prismaClient from "@/lib/prisma";
-import { IAddress } from "../address";
+import { IDeliveryAddress } from "../deliveryAddress";
 
 export const config = {
   api: {
@@ -9,8 +9,8 @@ export const config = {
   },
 };
 
-export type IClientComplete = IClient & {
-  address: IAddress;
+export type IOrderComplete = IOrder & {
+  deliveryAddress: IDeliveryAddress;
 };
 
 const handler: NextApiHandler = async (req, res) => {
@@ -20,15 +20,17 @@ const handler: NextApiHandler = async (req, res) => {
     if (!id) {
       return res
         .status(200)
-        .json({ error: `Não identificamos o ID do cliente.` });
+        .json({ error: `Não identificamos o ID do pedido.` });
     }
 
-    const response = await prismaClient.client.findUnique({
+    const response = await prismaClient.order.findUnique({
       where: {
         id: id as string,
       },
       include: {
-        address: true,
+        deliveryAddress: true,
+        client: true,
+        seller: true,
       },
     });
     res.json({ done: "ok", data: response });
