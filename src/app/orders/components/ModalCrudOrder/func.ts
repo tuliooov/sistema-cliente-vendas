@@ -8,6 +8,7 @@ export const mapperOrderToForm = async (
 ) => {
   console.log("order", order);
   setValue("order", {
+    id: order.id,
     observation: order.observation,
     clientId: order.client.id ?? "",
     sellerId: order.seller.id ?? "",

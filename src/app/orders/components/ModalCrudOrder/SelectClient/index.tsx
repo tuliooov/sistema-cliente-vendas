@@ -26,6 +26,7 @@ export default function SelectClient({
 
   const {
     register,
+    watch,
     formState: { errors },
   } = useFormContext<ISchemaCrudOrder>();
 
@@ -52,6 +53,7 @@ export default function SelectClient({
           labelId="client-select-label"
           id="client-select"
           {...register("order.clientId")}
+          value={watch("order.clientId")}
           label="Cliente"
           disabled={disabled}
           error={!!errors.order?.clientId}

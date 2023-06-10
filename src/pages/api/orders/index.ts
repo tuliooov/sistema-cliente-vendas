@@ -13,7 +13,9 @@ export const config = {
 export interface IOrder {
   id?: string;
   observation: string;
+  sellerId: string;
   seller: ISeller;
+  clientId: string;
   client: IClient;
   deliveryAddress: IAddress;
   createdAt: string;

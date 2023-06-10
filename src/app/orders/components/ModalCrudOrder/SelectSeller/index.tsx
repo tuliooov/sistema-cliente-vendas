@@ -26,6 +26,7 @@ export default function SelectSeller({
 
   const {
     register,
+    watch,
     formState: { errors },
   } = useFormContext<ISchemaCrudOrder>();
 
@@ -52,6 +53,7 @@ export default function SelectSeller({
           labelId="seller-select-label"
           id="seller-select"
           {...register("order.sellerId")}
+          value={watch("order.sellerId")}
           label="Representante"
           disabled={disabled}
           error={!!errors.order?.sellerId}

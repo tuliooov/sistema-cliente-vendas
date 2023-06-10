@@ -42,6 +42,8 @@ const handler: NextApiHandler = async (req, res) => {
       },
       include: {
         deliveryAddress: true,
+        client: true,
+        seller: true,
       },
     });
 
