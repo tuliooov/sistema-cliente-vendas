@@ -29,6 +29,9 @@ export default function ModalAddOrder({
   const methods = useForm<ISchemaCrudOrder>({
     resolver: zodResolver(schemaAddOrder),
     mode: "all",
+    defaultValues: {
+      products: [],
+    },
   });
 
   const sourceRef = useRef(axios.CancelToken.source());

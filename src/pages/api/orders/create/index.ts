@@ -20,7 +20,7 @@ const handler: NextApiHandler = async (req, res) => {
 
     console.log(requestBody.fields);
 
-    if (!deliveryAddress || !order || !products) {
+    if (!deliveryAddress || !order || !products.length) {
       return res.status(200).json({ error: `Formulário incompleto.` });
     }
 
@@ -33,11 +33,7 @@ const handler: NextApiHandler = async (req, res) => {
           },
         },
         productOrder: {
-          create: [
-            {
-              ...products,
-            },
-          ],
+          create: products,
         },
       },
       include: {

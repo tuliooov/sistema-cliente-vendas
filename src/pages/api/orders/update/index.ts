@@ -20,13 +20,12 @@ const handler: NextApiHandler = async (req, res) => {
 
     const { id: idOrder, ...restOrder } = order;
     const { id: idDeliveryAddress, ...restDeliveryAddress } = deliveryAddress;
-    const { id: idProductsOrder, ...restProductsOrder } = products;
 
     if (!idOrder) {
       return res.status(200).json({ error: `Pedido não identificado.` });
     }
 
-    if (!restOrder || !restDeliveryAddress || !restProductsOrder) {
+    if (!restOrder || !restDeliveryAddress || !products.length) {
       return res.status(200).json({ error: `Formulário incompleto.` });
     }
 
@@ -42,11 +41,7 @@ const handler: NextApiHandler = async (req, res) => {
           },
         },
         productOrder: {
-          create: [
-            {
-              ...restProductsOrder,
-            },
-          ],
+          create: products,
         },
       },
       include: {

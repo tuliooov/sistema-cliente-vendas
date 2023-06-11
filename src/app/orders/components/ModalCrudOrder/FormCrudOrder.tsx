@@ -10,6 +10,7 @@ import { ISchemaCrudOrder } from "./schema";
 import SelectClient from "./SelectClient";
 import SelectSeller from "./SelectSeller";
 import SelectProduct from "./SelectProduct";
+import AddProducts from "./AddProducts";
 
 interface FormCrudOrderProps {
   loading: boolean;
@@ -45,48 +46,17 @@ export default function FormCrudOrder({
             </Typography>
             <Divider />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={6}>
             <SelectClient disabledDefault={disabledDefault} loading={loading} />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={6}>
             <SelectSeller disabledDefault={disabledDefault} loading={loading} />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <SelectProduct
-              disabledDefault={disabledDefault}
-              loading={loading}
-            />
+
+          <Grid item xs={12} sm={12}>
+            <AddProducts disabledDefault={disabled} loading={loading} />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <TextField
-              {...register("products.quantidity", {
-                valueAsNumber: true,
-              })}
-              error={!!errors.products?.quantidity}
-              helperText={errors.products?.quantidity?.message}
-              disabled={disabled}
-              id="products.quantidity"
-              fullWidth
-              type={"number"}
-              multiline
-              label="Quantidade"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <TextField
-              {...register("products.value", {
-                valueAsNumber: true,
-              })}
-              error={!!errors.products?.value}
-              helperText={errors.products?.value?.message}
-              disabled={disabled}
-              id="products.value"
-              fullWidth
-              type={"number"}
-              multiline
-              label="Valor"
-            />
-          </Grid>
+
           <Grid item xs={12} sm={12}>
             <TextField
               {...register("order.observation")}
@@ -96,7 +66,7 @@ export default function FormCrudOrder({
               id="observation"
               fullWidth
               multiline
-              label="Pedido"
+              label="Observação"
             />
           </Grid>
           <Grid item xs={12}>
@@ -105,7 +75,7 @@ export default function FormCrudOrder({
             </Typography>
             <Divider />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={8} md={8}>
             <TextField
               {...register("deliveryAddress.street")}
               error={!!errors.deliveryAddress?.street}
@@ -116,7 +86,7 @@ export default function FormCrudOrder({
               label="Rua"
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={4} md={4}>
             <TextField
               {...register("deliveryAddress.number")}
               error={!!errors.deliveryAddress?.number}
@@ -127,7 +97,7 @@ export default function FormCrudOrder({
               label="Numero"
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={4} md={4}>
             <TextField
               {...register("deliveryAddress.district")}
               error={!!errors.deliveryAddress?.district}
@@ -138,7 +108,7 @@ export default function FormCrudOrder({
               label="Bairro"
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={4} md={4}>
             <TextField
               {...register("deliveryAddress.city")}
               error={!!errors.deliveryAddress?.city}
@@ -149,7 +119,7 @@ export default function FormCrudOrder({
               label="Cidade"
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={4} md={4}>
             <TextField
               {...register("deliveryAddress.state")}
               error={!!errors.deliveryAddress?.state}
