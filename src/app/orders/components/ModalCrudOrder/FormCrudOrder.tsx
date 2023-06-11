@@ -9,6 +9,7 @@ import { useFormContext } from "react-hook-form";
 import { ISchemaCrudOrder } from "./schema";
 import SelectClient from "./SelectClient";
 import SelectSeller from "./SelectSeller";
+import SelectProduct from "./SelectProduct";
 
 interface FormCrudOrderProps {
   loading: boolean;
@@ -49,6 +50,42 @@ export default function FormCrudOrder({
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
             <SelectSeller disabledDefault={disabledDefault} loading={loading} />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <SelectProduct
+              disabledDefault={disabledDefault}
+              loading={loading}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <TextField
+              {...register("products.quantidity", {
+                valueAsNumber: true,
+              })}
+              error={!!errors.products?.quantidity}
+              helperText={errors.products?.quantidity?.message}
+              disabled={disabled}
+              id="products.quantidity"
+              fullWidth
+              type={"number"}
+              multiline
+              label="Quantidade"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <TextField
+              {...register("products.value", {
+                valueAsNumber: true,
+              })}
+              error={!!errors.products?.value}
+              helperText={errors.products?.value?.message}
+              disabled={disabled}
+              id="products.value"
+              fullWidth
+              type={"number"}
+              multiline
+              label="Valor"
+            />
           </Grid>
           <Grid item xs={12} sm={12}>
             <TextField

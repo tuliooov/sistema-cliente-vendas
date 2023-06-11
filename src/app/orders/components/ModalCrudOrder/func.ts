@@ -22,4 +22,10 @@ export const mapperOrderToForm = async (
     state: order.deliveryAddress.state,
     street: order.deliveryAddress.street,
   });
+  setValue("products", {
+    id: order.productOrder[0].id,
+    productId: order.productOrder[0].productId,
+    value: order.productOrder[0].value,
+    quantidity: order.productOrder[0].quantidity,
+  });
 };

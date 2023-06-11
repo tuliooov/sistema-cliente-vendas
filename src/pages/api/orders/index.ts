@@ -3,6 +3,7 @@ import prismaOrder from "@/lib/prisma";
 import { ISeller } from "../seller";
 import { IClient } from "../clients";
 import { IAddress } from "../address";
+import { IProductOrder } from "../productOrder";
 
 export const config = {
   api: {
@@ -19,6 +20,7 @@ export interface IOrder {
   client: IClient;
   deliveryAddress: IAddress;
   createdAt: string;
+  productOrder: IProductOrder[];
 }
 
 export type IOrders = IOrder[];

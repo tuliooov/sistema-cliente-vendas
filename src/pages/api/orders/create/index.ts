@@ -15,9 +15,12 @@ const handler: NextApiHandler = async (req, res) => {
   if (req.method === "POST") {
     const requestBody = (await parseBody(req)) as any;
 
-    const { deliveryAddress, order } = requestBody.fields as ICreateOrder;
+    const { deliveryAddress, order, products } =
+      requestBody.fields as ICreateOrder;
 
-    if (!deliveryAddress || !order) {
+    console.log(requestBody.fields);
+
+    if (!deliveryAddress || !order || !products) {
       return res.status(200).json({ error: `Formulário incompleto.` });
     }
 
@@ -29,9 +32,17 @@ const handler: NextApiHandler = async (req, res) => {
             ...deliveryAddress,
           },
         },
+        productOrder: {
+          create: [
+            {
+              ...products,
+            },
+          ],
+        },
       },
       include: {
         deliveryAddress: true,
+        productOrder: true,
       },
     });
 

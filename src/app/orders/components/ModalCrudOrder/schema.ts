@@ -7,6 +7,12 @@ export const schemaAddOrder = z.object({
     sellerId: z.string().nonempty("O representante é obrigatório"),
     clientId: z.string().nonempty("O cliente é obrigatório"),
   }),
+  products: z.object({
+    id: z.string().optional(),
+    productId: z.string().nonempty("O produto é obrigatório"),
+    quantidity: z.number().min(0, "A quantidade é obrigatória"),
+    value: z.number().min(0, "O valor é obrigatório"),
+  }),
   deliveryAddress: z.object({
     id: z.string().optional(),
     street: z.string().nonempty("A rua é obrigatório"),

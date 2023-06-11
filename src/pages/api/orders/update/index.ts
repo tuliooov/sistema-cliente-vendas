@@ -15,16 +15,18 @@ const handler: NextApiHandler = async (req, res) => {
   if (req.method === "PUT") {
     const requestBody = (await parseBody(req)) as any;
 
-    const { deliveryAddress, order } = requestBody.fields as IUpdateOrder;
+    const { deliveryAddress, order, products } =
+      requestBody.fields as IUpdateOrder;
 
     const { id: idOrder, ...restOrder } = order;
     const { id: idDeliveryAddress, ...restDeliveryAddress } = deliveryAddress;
+    const { id: idProductsOrder, ...restProductsOrder } = products;
 
     if (!idOrder) {
       return res.status(200).json({ error: `Pedido não identificado.` });
     }
 
-    if (!restOrder || !restDeliveryAddress) {
+    if (!restOrder || !restDeliveryAddress || !restProductsOrder) {
       return res.status(200).json({ error: `Formulário incompleto.` });
     }
 
@@ -39,11 +41,19 @@ const handler: NextApiHandler = async (req, res) => {
             ...restDeliveryAddress,
           },
         },
+        productOrder: {
+          create: [
+            {
+              ...restProductsOrder,
+            },
+          ],
+        },
       },
       include: {
         deliveryAddress: true,
         client: true,
         seller: true,
+        productOrder: true,
       },
     });
 

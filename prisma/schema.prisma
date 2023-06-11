@@ -55,6 +55,26 @@ model Order {
   seller          Seller           @relation(fields: [sellerId], references: [id])
   sellerId        String           @db.ObjectId
   createdAt       DateTime         @default(now())
+  productOrder    ProductOrder[]
+}
+
+model Product {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  stock        Int
+  createdAt    DateTime      @default(now())
+  ProductOrder ProductOrder?
+}
+
+model ProductOrder {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  quantidity Int
+  value      Float
+  product    Product  @relation(fields: [productId], references: [id])
+  productId  String   @unique @db.ObjectId
+  order      Order    @relation(fields: [orderId], references: [id])
+  orderId    String   @unique @db.ObjectId
+  createdAt  DateTime @default(now())
 }
 
 model DeliveryAddress {
