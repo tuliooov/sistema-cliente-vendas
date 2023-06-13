@@ -3,6 +3,18 @@ import { parseBody } from "@/utils/parseBody";
 import prismaClient from "@/lib/prisma";
 import { ISchemaCrudOrder } from "@/app/orders/components/ModalCrudOrder/schema";
 
+function generateUniqueCode() {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let code = '';
+  while (code.length < 5) {
+    const randomChar = characters.charAt(Math.floor(Math.random() * characters.length));
+    if (code.indexOf(randomChar) === -1) {
+      code += randomChar;
+    }
+  }
+  return code.toUpperCase();
+}
+
 export const config = {
   api: {
     bodyParser: false,
@@ -27,6 +39,7 @@ const handler: NextApiHandler = async (req, res) => {
     const createdOrder = await prismaClient.order.create({
       data: {
         ...order,
+        code: generateUniqueCode(),
         deliveryAddress: {
           create: {
             ...deliveryAddress,

@@ -13,6 +13,7 @@ export const config = {
 
 export interface IOrder {
   id?: string;
+  code?: string;
   observation: string;
   sellerId: string;
   seller: ISeller;
@@ -20,6 +21,7 @@ export interface IOrder {
   client: IClient;
   deliveryAddress: IAddress;
   createdAt: string;
+  total: number;
   productOrder: IProductOrder[];
 }
 
@@ -27,7 +29,13 @@ export type IOrders = IOrder[];
 
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
-    const response = await prismaOrder.order.findMany();
+    const response = await prismaOrder.order.findMany({
+      include: {
+        deliveryAddress: true,
+        client: true,
+        seller: true,
+      },
+    });
     res.json({ done: "ok", data: response });
   } else {
     res.status(405).json({ error: `Method '${req.method}' Not Allowed` });

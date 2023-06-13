@@ -15,23 +15,33 @@ const handler: NextApiHandler = async (req, res) => {
   if (req.method === "PUT") {
     const requestBody = (await parseBody(req)) as any;
 
-    const { name, observation, id } = requestBody.fields as IUpdateSeller;
+    const { address, seller } = requestBody.fields as IUpdateSeller;
 
-    if (!id) {
+    const { id: idSeller, ...restSeller } = seller;
+    const { id: idAddress, ...restAddress } = address;
+
+    if (!idSeller) {
       return res.status(200).json({ error: `Representante não identificado.` });
     }
 
-    if (!name || !observation) {
+    if (!seller || !address) {
       return res.status(200).json({ error: `Formulário incompleto.` });
     }
 
     const updatedUser = await prismaClient.seller.update({
       where: {
-        id: id,
+        id: idSeller,
       },
       data: {
-        name,
-        observation,
+        ...restSeller,
+        address: {
+          update: {
+            ...restAddress,
+          },
+        },
+      },
+      include: {
+        address: true,
       },
     });
 

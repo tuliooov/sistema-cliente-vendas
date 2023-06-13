@@ -130,6 +130,17 @@ export default function FormCrudOrder({
               label="Estado"
             />
           </Grid>
+          <Grid item xs={12} sm={4} md={4}>
+            <TextField
+              {...register("deliveryAddress.cep")}
+              error={!!errors.deliveryAddress?.cep}
+              helperText={errors.deliveryAddress?.cep?.message}
+              disabled={disabled}
+              id="cep"
+              fullWidth
+              label="CEP"
+            />
+          </Grid>
         </Grid>
       </Box>
     </Container>

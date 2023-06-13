@@ -15,17 +15,16 @@ const handler: NextApiHandler = async (req, res) => {
   if (req.method === "PUT") {
     const requestBody = (await parseBody(req)) as any;
 
-    const { deliveryAddress, order, products } =
+    const { deliveryAddress, order, products: ProductsOrder } =
       requestBody.fields as IUpdateOrder;
 
     const { id: idOrder, ...restOrder } = order;
     const { id: idDeliveryAddress, ...restDeliveryAddress } = deliveryAddress;
-
     if (!idOrder) {
       return res.status(200).json({ error: `Pedido não identificado.` });
     }
 
-    if (!restOrder || !restDeliveryAddress || !products.length) {
+    if (!restOrder || !restDeliveryAddress || !ProductsOrder.length) {
       return res.status(200).json({ error: `Formulário incompleto.` });
     }
 
@@ -40,17 +39,21 @@ const handler: NextApiHandler = async (req, res) => {
             ...restDeliveryAddress,
           },
         },
-        productOrder: {
-          create: products,
-        },
       },
       include: {
         deliveryAddress: true,
-        client: true,
-        seller: true,
-        productOrder: true,
       },
     });
+
+    console.log("updatedUser", updatedUser)
+
+
+    for (let index = 0; index < ProductsOrder.length; index++) {
+      const productOrder = ProductsOrder[index];
+      const {id, ...productOrderNoId} = productOrder
+      await prismaClient.productOrder.update({ where: {id: id}, data: productOrderNoId,  })
+    }
+
 
     res.json({ done: "ok", data: updatedUser });
   } else {

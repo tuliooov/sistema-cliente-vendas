@@ -21,6 +21,7 @@ export const schemaAddClient = z.object({
     district: z.string().nonempty("O bairro é obrigatório"),
     city: z.string().nonempty("A cidade é obrigatório"),
     state: z.string().nonempty("O estado é obrigatório"),
+    cep: z.string().nonempty("O CEP é obrigatório"),
     country: z.string().default("Brasil"),
   }),
 });

@@ -28,8 +28,16 @@ const handler: NextApiHandler = async (req, res) => {
       include: {
         deliveryAddress: true,
         client: true,
-        seller: true,
-        productOrder: true,
+        seller: {
+          include: {
+            address: true,
+          }
+        },
+        productOrder: {
+          include: {
+            product: true
+          }
+        },
       },
     });
     res.json({ done: "ok", data: response });

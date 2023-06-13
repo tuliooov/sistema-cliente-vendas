@@ -21,6 +21,7 @@ export const mapperClientToForm = (
     id: client.address.id,
     city: client.address.city,
     country: client.address.country,
+    cep: client.address.cep,
     district: client.address.district,
     number: client.address.number,
     state: client.address.state,

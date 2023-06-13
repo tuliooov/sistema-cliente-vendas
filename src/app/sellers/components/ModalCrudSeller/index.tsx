@@ -9,11 +9,12 @@ import FormCrudSeller from "./FormCrudSeller";
 import { FieldErrors, FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { CircularProgress, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { IModal } from "../TableSellers";
 import { mapperSellerToForm } from "./func";
 import { ISellerComplete } from "@/pages/api/seller/[id]";
 import { ISchemaCrudSeller, schemaAddSeller } from "./schema";
+import { Loading } from "@/app/orders/components/Loading";
 
 interface ModalAddSellerProps {
   refreshSellers: () => void;
@@ -100,10 +101,10 @@ export default function ModalAddSeller({
   }, [fetchSeller, fetchingSeller, modalSettings.state?.id, sourceRef]);
 
   const title = {
-    add: "Adicionar Sellere",
-    edit: "Editar Sellere",
-    view: "Visualizar Sellere",
-    undefined: "Sellere",
+    add: "Adicionar Representante",
+    edit: "Editar Representante",
+    view: "Visualizar Representante",
+    undefined: "Representante",
   };
 
   return (
@@ -120,7 +121,7 @@ export default function ModalAddSeller({
           </Typography>
         </DialogTitle>
         <DialogContent>
-          {fetchingSeller && <CircularProgress />}
+          {fetchingSeller && <Loading />}
           {!fetchingSeller && (
             <FormCrudSeller
               loading={loading}

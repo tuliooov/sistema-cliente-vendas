@@ -9,11 +9,13 @@ import FormCrudOrder from "./FormCrudOrder";
 import { FieldErrors, FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { CircularProgress, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { IModal } from "../TableOrders";
 import { mapperOrderToForm } from "./func";
 import { ISchemaCrudOrder, schemaAddOrder } from "./schema";
 import { IOrderComplete } from "@/pages/api/orders/[id]";
+import { Loading } from "../Loading";
+import ModalPrint from "../ModalPrint";
 
 interface ModalAddOrderProps {
   refreshOrders: () => void;
@@ -36,10 +38,22 @@ export default function ModalAddOrder({
 
   const sourceRef = useRef(axios.CancelToken.source());
 
+  const [order, setOrder] = useState<IOrderComplete>();
+  const [renderPrint, setRenderPrint] = useState(false);
   const [loading, setLoading] = useState(false);
   const [fetchingOrder, setFetchingOrder] = useState(
     modalSettings.type !== "add"
   );
+
+  const handlePrint = () => {
+    setRenderPrint(true);
+    setTimeout(() => {
+      window.print();
+    }, 500);
+    setTimeout(() => {
+      setRenderPrint(false);
+    }, 500);
+  };
 
   const handleClose =
     (force = false) =>
@@ -62,7 +76,14 @@ export default function ModalAddOrder({
   };
 
   const onSubmit = async (data: ISchemaCrudOrder) => {
-    console.log(data);
+    data.order.total =
+      data.products?.reduce((previousValue, currentValue) => {
+        return (
+          previousValue +
+          (currentValue.quantidity || 0) * (currentValue.value || 0)
+        );
+      }, 0) || 0;
+
     try {
       setLoading(true);
       if (modalSettings.type === "add")
@@ -83,8 +104,9 @@ export default function ModalAddOrder({
         setFetchingOrder(true);
         const response = await axios.get(`/api/orders/${id}`);
         if (!response.data.data.id) new Error("Pedido não encontrado");
-        const order = response.data.data as IOrderComplete;
-        await mapperOrderToForm(order, methods.setValue);
+        const orderResponse = response.data.data as IOrderComplete;
+        await mapperOrderToForm(orderResponse, methods.setValue);
+        setOrder(orderResponse);
         setFetchingOrder(false);
       } catch (error) {
         console.warn("Get order: ", error);
@@ -112,6 +134,7 @@ export default function ModalAddOrder({
 
   return (
     <FormProvider {...methods}>
+      {renderPrint && order && <ModalPrint order={order} />}
       <Dialog
         open={modalSettings.open}
         onClose={handleClose(false)}
@@ -120,11 +143,11 @@ export default function ModalAddOrder({
       >
         <DialogTitle id="crud-order-form-dialog-title">
           <Typography variant="h4" gutterBottom>
-            {title[`${modalSettings.type}`]}
+            {title[`${modalSettings.type}`]} - {modalSettings.state?.code}
           </Typography>
         </DialogTitle>
         <DialogContent>
-          {fetchingOrder && <CircularProgress />}
+          {fetchingOrder && <Loading />}
           {!fetchingOrder && (
             <FormCrudOrder
               loading={loading}
@@ -133,6 +156,11 @@ export default function ModalAddOrder({
           )}
         </DialogContent>
         <DialogActions>
+          {modalSettings?.type === "view" && (
+            <Button onClick={handlePrint} disabled={loading || !order}>
+              Imprimir
+            </Button>
+          )}
           <Button onClick={handleClose(false)} disabled={loading}>
             Cancelar
           </Button>

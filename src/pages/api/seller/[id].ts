@@ -9,7 +9,9 @@ export const config = {
   },
 };
 
-export type ISellerComplete = ISeller;
+export type ISellerComplete = ISeller & {
+  address: IAddress;
+};
 
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
@@ -25,6 +27,9 @@ const handler: NextApiHandler = async (req, res) => {
       where: {
         id: id as string,
       },
+      include: {
+        address: true,
+      }
     });
     res.json({ done: "ok", data: response });
   } else {

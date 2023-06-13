@@ -9,24 +9,32 @@ export const config = {
   },
 };
 
-type ICreateClient = ISchemaCrudSeller;
+type ICreateSeller = ISchemaCrudSeller;
 
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "POST") {
     const requestBody = (await parseBody(req)) as any;
 
-    const { name, observation } = requestBody.fields as ICreateClient;
+    const { seller, address } = requestBody.fields as ICreateSeller;
 
-    if (!name || !observation) {
+    if (!seller || !address) {
       return res.status(200).json({ error: `Formulário incompleto.` });
     }
 
     const createdUser = await prismaClient.seller.create({
       data: {
-        name,
-        observation,
+        ...seller,
+        address: {
+          create: {
+            ...address,
+          },
+        },
+      },
+      include: {
+        address: true,
       },
     });
+
 
     res.json({ done: "ok", data: createdUser });
   } else {

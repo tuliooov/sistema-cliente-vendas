@@ -1,45 +1,22 @@
 "use client";
 
 import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import axios from "axios";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useEffect, useState } from "react";
-import { Button, CircularProgress, Grid, Typography } from "@mui/material";
+import {
+  Button,
+  Grid,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { IClients } from "@/pages/api/clients";
 import ModalAddClient from "../ModalCrudClient";
+import { TableStyled } from "@/components/Table";
 import { formattedDate } from "@/utils/formatDate";
-import Stack from "@mui/material/Stack";
-import IconButton from "@mui/material/IconButton";
-import Fingerprint from "@mui/icons-material/Fingerprint";
 import EditIcon from "@mui/icons-material/Edit";
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { Loading } from "@/app/orders/components/Loading";
 
 export interface IModal {
   open: boolean;
@@ -135,71 +112,57 @@ export default function TableClientes() {
       </Grid>
       {loading && (
         <>
-          <CircularProgress />
+          <Loading />
         </>
       )}
       {!loading && !!clients?.length && (
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 700 }} aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell>Empresa</StyledTableCell>
-                <StyledTableCell align="right">Responsavel</StyledTableCell>
-                <StyledTableCell align="right">Telefone</StyledTableCell>
-                <StyledTableCell align="right">Email</StyledTableCell>
-                <StyledTableCell align="right">CPF/CNPJ</StyledTableCell>
-                <StyledTableCell align="right">Data Cadastro</StyledTableCell>
-                <StyledTableCell align="right">Opções</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {clients.map(
-                ({
-                  id,
-                  nameFantasy,
-                  responsible,
-                  phone,
-                  email,
-                  cnpj,
-                  createdAt,
-                }) => (
-                  <StyledTableRow key={id}>
-                    <StyledTableCell component="th" scope="row">
-                      {nameFantasy}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      {responsible}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">{phone}</StyledTableCell>
-                    <StyledTableCell align="right">{email}</StyledTableCell>
-                    <StyledTableCell align="right">{cnpj}</StyledTableCell>
-                    <StyledTableCell align="right">
-                      {formattedDate(createdAt)}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      <Stack direction="row" spacing={1}>
-                        <IconButton
-                          aria-label="edit"
-                          color="error"
-                          onClick={handleEdit(id)}
-                        >
-                          <EditIcon />
-                        </IconButton>
-                        <IconButton
-                          aria-label="visibility"
-                          color="success"
-                          onClick={handleView(id)}
-                        >
-                          <VisibilityIcon />
-                        </IconButton>
-                      </Stack>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                )
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <TableStyled
+          titles={[
+            "Empresa",
+            "Responsável",
+            "Telefone",
+            "Email",
+            "CPF/CNPJ",
+            "Data Cadastro",
+            "Opções",
+          ]}
+          data={clients.map(
+            ({
+              id,
+              nameFantasy,
+              responsible,
+              phone,
+              email,
+              cnpj,
+              createdAt,
+            }) => {
+              return [
+                nameFantasy,
+                responsible,
+                phone,
+                email,
+                cnpj,
+                formattedDate(createdAt),
+                <Stack direction="row" spacing={1} key={id}>
+                  <IconButton
+                    aria-label="edit"
+                    color="error"
+                    onClick={handleEdit(id)}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    aria-label="visibility"
+                    color="success"
+                    onClick={handleView(id)}
+                  >
+                    <VisibilityIcon />
+                  </IconButton>
+                </Stack>,
+              ];
+            }
+          )}
+        />
       )}
     </>
   );

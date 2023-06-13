@@ -1,6 +1,7 @@
 import { NextApiHandler } from "next";
 import prismaClient from "@/lib/prisma";
 import { IOrder } from "../orders";
+import { IProductComplete } from "../products/[id]";
 
 export const config = {
   api: {
@@ -16,6 +17,7 @@ export interface IProductOrder {
   order: IOrder;
   orderId: string;
   createdAt: string;
+  product?: IProductComplete
 }
 
 const handler: NextApiHandler = async (req, res) => {

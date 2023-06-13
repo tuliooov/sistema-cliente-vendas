@@ -10,10 +10,11 @@ import { FieldErrors, FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ISchemaCrudClient, schemaAddClient } from "./schema";
 import axios from "axios";
-import { CircularProgress, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { IModal } from "../TableClientes";
 import { IClientComplete } from "@/pages/api/clients/[id]";
 import { mapperClientToForm } from "./func";
+import { Loading } from "@/app/orders/components/Loading";
 
 interface ModalAddClientProps {
   refreshClients: () => void;
@@ -120,7 +121,7 @@ export default function ModalAddClient({
           </Typography>
         </DialogTitle>
         <DialogContent>
-          {fetchingClient && <CircularProgress />}
+          {fetchingClient && <Loading />}
           {!fetchingClient && (
             <FormCrudClient
               loading={loading}

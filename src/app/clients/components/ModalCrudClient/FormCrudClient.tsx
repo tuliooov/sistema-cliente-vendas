@@ -179,6 +179,17 @@ export default function FormCrudClient({
               label="Estado"
             />
           </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <TextField
+              {...register("address.cep")}
+              error={!!errors.address?.cep}
+              helperText={errors.address?.cep?.message}
+              disabled={disabled}
+              id="cep"
+              fullWidth
+              label="CEP"
+            />
+          </Grid>
           <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
               Observação

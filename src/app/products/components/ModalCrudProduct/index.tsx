@@ -9,11 +9,12 @@ import FormCrudProduct from "./FormCrudProduct";
 import { FieldErrors, FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { CircularProgress, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { IModal } from "../TableProducts";
 import { mapperProductToForm } from "./func";
 import { IProductComplete } from "@/pages/api/products/[id]";
 import { ISchemaCrudProduct, schemaAddProduct } from "./schema";
+import { Loading } from "@/app/orders/components/Loading";
 
 interface ModalAddProductProps {
   refreshProducts: () => void;
@@ -120,7 +121,7 @@ export default function ModalAddProduct({
           </Typography>
         </DialogTitle>
         <DialogContent>
-          {fetchingProduct && <CircularProgress />}
+          {fetchingProduct && <Loading />}
           {!fetchingProduct && (
             <FormCrudProduct
               loading={loading}

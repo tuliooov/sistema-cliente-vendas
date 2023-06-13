@@ -5,6 +5,16 @@
     font-size: 1.6rem;
 }
 
+.show-only-print{
+  display: none;  
+}
+
+@media print {
+  .show-only-print {
+    display: block;
+  }
+}
+
 :root {
     font-size: 62.5%;
     --background-color: #fffffe;

@@ -9,6 +9,7 @@ export const mapperOrderToForm = async (
   console.log("order", order);
   setValue("order", {
     id: order.id,
+    code: order.code,
     observation: order.observation,
     clientId: order.client.id ?? "",
     sellerId: order.seller.id ?? "",
@@ -17,6 +18,7 @@ export const mapperOrderToForm = async (
     id: order.deliveryAddress.id,
     city: order.deliveryAddress.city,
     country: order.deliveryAddress.country,
+    cep: order.deliveryAddress.cep,
     district: order.deliveryAddress.district,
     number: order.deliveryAddress.number,
     state: order.deliveryAddress.state,

@@ -1,49 +1,24 @@
 "use client";
 
-import { styled } from "@mui/material/styles";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
 import axios from "axios";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useEffect, useState } from "react";
-import { Button, CircularProgress, Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { IOrders } from "@/pages/api/orders";
 import ModalAddOrder from "../ModalCrudOrder";
 import { formattedDate } from "@/utils/formatDate";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
+import { TableStyled } from "@/components/Table";
+import { Loading } from "../Loading";
 
 export interface IModal {
   open: boolean;
   type?: "add" | "edit" | "view";
   state?: {
     id?: string;
+    code?: string
   };
 }
 
@@ -78,22 +53,24 @@ export default function TableOrders() {
     setModalSettings(value);
   };
 
-  const handleEdit = (id?: string) => () => {
+  const handleEdit = (id?: string, code?: string) => () => {
     handleModalSettings({
       open: true,
       type: "edit",
       state: {
         id,
+        code
       },
     });
   };
 
-  const handleView = (id?: string) => () => {
+  const handleView = (id?: string, code?: string) => () => {
     handleModalSettings({
       open: true,
       type: "view",
       state: {
         id,
+        code,
       },
     });
   };
@@ -133,51 +110,47 @@ export default function TableOrders() {
       </Grid>
       {loading && (
         <>
-          <CircularProgress />
+          <Loading />
         </>
       )}
       {!loading && !!orders?.length && (
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 700 }} aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell align="right">Observação</StyledTableCell>
-                <StyledTableCell align="right">Data Cadastro</StyledTableCell>
-                <StyledTableCell align="right">Opções</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {orders.map(({ id, observation, createdAt }) => (
-                <StyledTableRow key={id}>
-                  <StyledTableCell component="th" scope="row">
-                    {observation}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">
-                    {formattedDate(createdAt)}
-                  </StyledTableCell>
-                  <StyledTableCell align="right">
-                    <Stack direction="row" spacing={1}>
-                      <IconButton
-                        aria-label="edit"
-                        color="error"
-                        onClick={handleEdit(id)}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-label="visibility"
-                        color="success"
-                        onClick={handleView(id)}
-                      >
-                        <VisibilityIcon />
-                      </IconButton>
-                    </Stack>
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <TableStyled
+          titles={[
+            "Código",
+            "Cliente",
+            "Representante",
+            "Observação",
+            "Total",
+            "Data Cadastro",
+            "Opções",
+          ]}
+          data={orders.map(({ id, code, client, seller, total, observation, createdAt }) => {
+            return [
+              code,
+              client.nameFantasy,
+              seller.name,
+              observation,
+              total,
+              formattedDate(createdAt),
+              <Stack direction="row" spacing={1} key={id}>
+                <IconButton
+                  aria-label="edit"
+                  color="error"
+                  onClick={handleEdit(id, code)}
+                >
+                  <EditIcon />
+                </IconButton>
+                <IconButton
+                  aria-label="visibility"
+                  color="success"
+                  onClick={handleView(id, code)}
+                >
+                  <VisibilityIcon />
+                </IconButton>
+              </Stack>,
+            ];
+          })}
+        />
       )}
     </>
   );

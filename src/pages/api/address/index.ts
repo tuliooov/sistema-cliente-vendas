@@ -15,6 +15,7 @@ export interface IAddress {
   city: string;
   state: string;
   country: string;
+  cep: string;
 }
 
 const handler: NextApiHandler = async (req, res) => {
