@@ -32,8 +32,6 @@ export default function ModalAddClient({
   });
 
   const sourceRef = useRef(axios.CancelToken.source());
-  const isFirstRender = useRef(true);
-  
   const [loading, setLoading] = useState(false);
   const [fetchingClient, setFetchingClient] = useState(
     modalSettings.type !== "add"
@@ -93,10 +91,6 @@ export default function ModalAddClient({
   );
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
     if (fetchingClient && modalSettings.state?.id) {
       fetchClient(modalSettings.state.id);
     }

@@ -27,8 +27,6 @@ export default function ModalAddProduct({
   handleModalSettings,
   modalSettings,
 }: ModalAddProductProps) {
-  const isFirstRender = useRef(true);
-
   const methods = useForm<ISchemaCrudProduct>({
     resolver: zodResolver(schemaAddProduct),
   });
@@ -94,10 +92,6 @@ export default function ModalAddProduct({
   );
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
     if (fetchingProduct && modalSettings.state?.id) {
       fetchProduct(modalSettings.state.id);
     }

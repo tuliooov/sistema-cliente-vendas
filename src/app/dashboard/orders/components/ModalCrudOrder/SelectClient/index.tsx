@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { ISchemaCrudOrder } from "../schema";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { IClientsOrders } from "@/pages/api/orders/clients";
 import axios from "axios";
 
@@ -22,7 +22,6 @@ export default function SelectClient({
   loading = false,
   disabledDefault,
 }: SelectClientProps) {
-  const isFirstRender = useRef(true);
   const [clients, setClients] = useState<IClientsOrders>();
 
   const {
@@ -42,10 +41,6 @@ export default function SelectClient({
   }, []);
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
     fetchRequireds();
   }, [fetchRequireds]);
 

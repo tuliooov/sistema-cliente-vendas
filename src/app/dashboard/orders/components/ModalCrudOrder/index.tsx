@@ -37,7 +37,6 @@ export default function ModalAddOrder({
   });
 
   const sourceRef = useRef(axios.CancelToken.source());
-  const isFirstRender = useRef(true);
 
   const [order, setOrder] = useState<IOrderComplete>();
   const [renderPrint, setRenderPrint] = useState(false);
@@ -118,10 +117,6 @@ export default function ModalAddOrder({
   );
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
     if (fetchingOrder && modalSettings.state?.id) {
       fetchOrder(modalSettings.state.id);
     }

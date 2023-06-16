@@ -1,11 +1,8 @@
 "use client";
 
-import { styled } from "@mui/material/styles";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
 import axios from "axios";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Grid, Typography } from "@mui/material";
 import { IProducts } from "@/pages/api/products";
 import ModalAddProduct from "../ModalCrudProduct";
@@ -24,7 +21,6 @@ export interface IModal {
 }
 
 export default function TableProducts() {
-  const isFirstRender = useRef(true);
   const [products, setProducts] = useState<IProducts>();
   const [loading, setLoading] = useState(true);
   const [modalSettings, setModalSettings] = useState<IModal>({
@@ -48,10 +44,6 @@ export default function TableProducts() {
   };
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
     fetchProducts();
   }, []);
 

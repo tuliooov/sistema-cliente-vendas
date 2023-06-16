@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Grid, Typography } from "@mui/material";
 import { IOrders } from "@/pages/api/orders";
 import ModalAddOrder from "../ModalCrudOrder";
@@ -23,8 +23,6 @@ export interface IModal {
 }
 
 export default function TableOrders() {
-  const isFirstRender = useRef(true);
-
   const [orders, setOrders] = useState<IOrders>();
   const [loading, setLoading] = useState(true);
   const [modalSettings, setModalSettings] = useState<IModal>({
@@ -48,10 +46,6 @@ export default function TableOrders() {
   };
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
     fetchOrders();
   }, []);
 

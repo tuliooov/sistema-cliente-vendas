@@ -9,6 +9,7 @@ import { useSnackbar } from 'material-ui-snackbar-provider'
 export interface UserContextType {
   user: IUser
   changeUser: (newValue: IUser) => Promise<void>
+  logOut: () => void
 }
 
 export const UserContext = createContext({})
@@ -72,7 +73,7 @@ export const UserProvider = ({ children }: { children: any }) => {
   }, [handleMessage, logOut, user.accessToken])
 
   return (
-    <UserContext.Provider value={{ user, changeUser }}>
+    <UserContext.Provider value={{ user, changeUser, logOut }}>
       {children}
     </UserContext.Provider>
   )

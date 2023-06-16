@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { ISchemaCrudOrder } from "../schema";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ISellersOrders } from "@/pages/api/orders/sellers";
 import axios from "axios";
 
@@ -22,7 +22,6 @@ export default function SelectSeller({
   loading = false,
   disabledDefault,
 }: SelectSellerProps) {
-  const isFirstRender = useRef(true);
   const [sellers, setSellers] = useState<ISellersOrders>();
 
   const {
@@ -42,10 +41,6 @@ export default function SelectSeller({
   }, []);
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
     fetchRequireds();
   }, [fetchRequireds]);
 

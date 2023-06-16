@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Grid, Typography } from "@mui/material";
 import { ISellers } from "@/pages/api/seller";
 import ModalAddSeller from "../ModalCrudSeller";
@@ -22,7 +22,6 @@ export interface IModal {
 }
 
 export default function TableSellers() {
-  const isFirstRender = useRef(true);
   const [sellers, setSellers] = useState<ISellers>();
   const [loading, setLoading] = useState(true);
   const [modalSettings, setModalSettings] = useState<IModal>({
@@ -46,10 +45,6 @@ export default function TableSellers() {
   };
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
     fetchSellers();
   }, []);
 

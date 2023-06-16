@@ -11,8 +11,7 @@ import {
 } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { ISchemaCrudOrder } from "../schema";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { ISellersOrders } from "@/pages/api/orders/sellers";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import SelectProduct from "../SelectProduct";
 import { IProductsOrder } from "@/pages/api/orders/products";
@@ -26,7 +25,6 @@ export default function AddProducts({
   loading = false,
   disabledDefault,
 }: AddProductsProps) {
-  const isFirstRender = useRef(true);
   const [products, setProducts] = useState<IProductsOrder>();
 
   const {
@@ -46,10 +44,6 @@ export default function AddProducts({
   }, []);
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
     fetchRequireds();
   }, [fetchRequireds]);
 

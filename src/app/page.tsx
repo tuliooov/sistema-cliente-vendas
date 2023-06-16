@@ -17,6 +17,7 @@ import axios from "axios";
 import { LoadingButton } from "@mui/lab";
 import { useUser } from "@/contexts/userContext";
 import { useRouter } from 'next/navigation';
+import { useEffect } from "react";
 
 
 export default function SignInSide() {
@@ -24,7 +25,7 @@ export default function SignInSide() {
 
   const { register, handleSubmit } = useForm<ISchemaLogin>();
   const [loading, setLoading] = React.useState(false);
-  const {changeUser} = useUser()
+  const { changeUser, logOut } = useUser()
 
   const onSubmit = async (data: ISchemaLogin) => {
     console.log(data)
@@ -38,6 +39,12 @@ export default function SignInSide() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    console.log("logout");
+    
+    logOut()
+  }, [logOut])
 
   return (
     <>

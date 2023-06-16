@@ -1,5 +1,6 @@
 "use client";
 
+import LogoutIcon from '@mui/icons-material/Logout';
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -16,6 +17,7 @@ import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { MainListItems } from "./MenuOptions";
+import { useUser } from "@/contexts/userContext";
 
 function Copyright(props: any) {
   return (
@@ -90,6 +92,8 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ children }: DashboardProps) {
+  const { logOut } = useUser();
+
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -125,6 +129,14 @@ export default function Dashboard({ children }: DashboardProps) {
           >
             DT Chapa Forte
           </Typography>
+
+          <IconButton
+            edge="end"
+            color="inherit"
+            onClick={logOut}
+          >
+            <LogoutIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>

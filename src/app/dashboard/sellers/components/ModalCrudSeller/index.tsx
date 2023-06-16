@@ -32,7 +32,6 @@ export default function ModalAddSeller({
   });
 
   const sourceRef = useRef(axios.CancelToken.source());
-  const isFirstRender = useRef(true);
   
   const [loading, setLoading] = useState(false);
   const [fetchingSeller, setFetchingSeller] = useState(
@@ -93,10 +92,6 @@ export default function ModalAddSeller({
   );
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
     if (fetchingSeller && modalSettings.state?.id) {
       fetchSeller(modalSettings.state.id);
     }
