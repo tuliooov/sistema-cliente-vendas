@@ -14,7 +14,7 @@ export interface UserContextType {
 export const UserContext = createContext({})
 
 export const getUser = () => {
-  const user = localStorage.getItem('user')
+  const user =  typeof window !== "undefined" ? localStorage.getItem("user") : null
   if (user) {
     return JSON.parse(user)
   }

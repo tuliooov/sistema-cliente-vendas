@@ -2,7 +2,7 @@ import { NextApiHandler } from "next";
 import { parseBody } from "@/utils/parseBody";
 import prismaClient from "@/lib/prisma";
 import { middleware } from "@/utils/helper/middleware";
-import { ISchemaCrudOrder } from "@/app/orders/components/ModalCrudOrder/schema";
+import { ISchemaCrudOrder } from "@/app/dashboard/orders/components/ModalCrudOrder/schema";
 
 export const config = {
   api: {

@@ -1,6 +1,7 @@
 "use client"
 import Dashboard from "@/components/Dashboard";
 import { useRouter } from 'next/navigation';
+import { useEffect } from "react";
 
 
 export default function RootLayout({
@@ -10,11 +11,11 @@ export default function RootLayout({
 }) {
   const { replace } = useRouter()
   
-  
-  if(localStorage.getItem('user') === null){
-    replace('/')
-    return <></>
-  }
+  useEffect(() => {
+    if(localStorage.getItem('user') === null){
+      replace('/')
+    }
+  }, [replace])
 
   return (
       <Dashboard>{children}</Dashboard>
