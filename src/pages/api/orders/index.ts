@@ -4,6 +4,7 @@ import { ISeller } from "../seller";
 import { IClient } from "../clients";
 import { IAddress } from "../address";
 import { IProductOrder } from "../productOrder";
+import { middleware } from "@/utils/helper/middleware";
 
 export const config = {
   api: {
@@ -20,7 +21,8 @@ export interface IOrder {
   clientId: string;
   client: IClient;
   deliveryAddress: IAddress;
-  createdAt: string;
+  updatedAt?: string;
+  createdAt?: string;
   total: number;
   productOrder: IProductOrder[];
 }
@@ -42,4 +44,4 @@ const handler: NextApiHandler = async (req, res) => {
   }
 };
 
-export default handler;
+export default middleware(handler);

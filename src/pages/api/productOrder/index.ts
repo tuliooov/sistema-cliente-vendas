@@ -1,5 +1,6 @@
 import { NextApiHandler } from "next";
 import prismaClient from "@/lib/prisma";
+import { middleware } from "@/utils/helper/middleware";
 import { IOrder } from "../orders";
 import { IProductComplete } from "../products/[id]";
 
@@ -29,4 +30,4 @@ const handler: NextApiHandler = async (req, res) => {
   }
 };
 
-export default handler;
+export default middleware(handler);

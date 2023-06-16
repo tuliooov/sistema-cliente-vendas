@@ -1,6 +1,7 @@
 import { IOrder } from "./index";
 import { NextApiHandler } from "next";
 import prismaClient from "@/lib/prisma";
+import { middleware } from "@/utils/helper/middleware";
 import { IDeliveryAddress } from "../deliveryAddress";
 
 export const config = {
@@ -46,4 +47,4 @@ const handler: NextApiHandler = async (req, res) => {
   }
 };
 
-export default handler;
+export default middleware(handler);

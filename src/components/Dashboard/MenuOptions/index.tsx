@@ -8,9 +8,9 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PeopleIcon from "@mui/icons-material/People";
 import Link from "next/link";
-
+import CategoryIcon from '@mui/icons-material/Category';
 export const MainListItems = () => {
-  const [selected, setSelected] = React.useState("/");
+  const [selected, setSelected] = React.useState("/dashboard");
 
   const handleListItemClick = (href: string) => {
     setSelected(href);
@@ -18,28 +18,28 @@ export const MainListItems = () => {
 
   const options = [
     {
-      href: "/",
+      href: "/dashboard/",
       icon: <DashboardIcon />,
       text: "Dashboard",
     },
     {
-      href: "/orders",
+      href: "/dashboard/orders",
       icon: <ShoppingCartIcon />,
       text: "Pedidos",
     },
     {
-      href: "/clients",
-      icon: <ShoppingCartIcon />,
+      href: "/dashboard/clients",
+      icon: <PeopleIcon />,
       text: "Clientes",
     },
     {
-      href: "/sellers",
+      href: "/dashboard/sellers",
       icon: <ShareIcon />,
       text: "Representantes",
     },
     {
-      href: "/products",
-      icon: <PeopleIcon />,
+      href: "/dashboard/products",
+      icon: <CategoryIcon />,
       text: "Produtos",
     },
   ];

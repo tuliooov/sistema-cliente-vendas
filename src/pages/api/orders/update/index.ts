@@ -1,6 +1,7 @@
 import { NextApiHandler } from "next";
 import { parseBody } from "@/utils/parseBody";
 import prismaClient from "@/lib/prisma";
+import { middleware } from "@/utils/helper/middleware";
 import { ISchemaCrudOrder } from "@/app/orders/components/ModalCrudOrder/schema";
 
 export const config = {
@@ -61,4 +62,4 @@ const handler: NextApiHandler = async (req, res) => {
   }
 };
 
-export default handler;
+export default middleware(handler);
