@@ -27,7 +27,6 @@ export interface IModal {
 }
 
 export default function TableClientes() {
-  const isFirstRender = useRef(true);
   const [clients, setClients] = useState<IClients>();
   const [loading, setLoading] = useState(true);
   const [modalSettings, setModalSettings] = useState<IModal>({
@@ -51,10 +50,6 @@ export default function TableClientes() {
   };
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
     fetchClients();
   }, []);
 
