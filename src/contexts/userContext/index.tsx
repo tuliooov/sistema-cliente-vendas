@@ -45,32 +45,30 @@ export const UserProvider = ({ children }: { children: any }) => {
     push('/')
   }, [push]	)
 
-  useEffect(() => {
-    axios.defaults.headers.common['Authorization'] = user.accessToken;
-    axios.interceptors.request.use((request: InternalAxiosRequestConfig<any>) => {
-      if(request && !request.url?.includes("/api/oauth")){
-        if(!request.headers.Authorization){
-          logOut()
-          return Promise.reject(new Error('Token expirado'))
-        }
+  axios.defaults.headers.common['Authorization'] = user.accessToken;
+  axios.interceptors.request.use((request: InternalAxiosRequestConfig<any>) => {
+    if(request && !request.url?.includes("/api/oauth")){
+      if(!request.headers.Authorization){
+        logOut()
+        return Promise.reject(new Error('Token expirado'))
       }
-      return request
-    })
-    axios.interceptors.response.use(
-      (response: AxiosResponse<any>) => {
-        return response
-      },
-      (err: any) => {
-        debugger
-        if(err && err.response.status === 403 && err.response.data.error === "Token expirado"){
-          logOut()
-        }
-        console.log("err.response", err.response)
-        handleMessage(err.response?.data?.error || err.message)
-        return Promise.reject(err)
-      },
-    )
-  }, [handleMessage, logOut, user.accessToken])
+    }
+    return request
+  })
+  axios.interceptors.response.use(
+    (response: AxiosResponse<any>) => {
+      return response
+    },
+    (err: any) => {
+      debugger
+      if(err && err.response.status === 403 && err.response.data.error === "Token expirado"){
+        logOut()
+      }
+      console.log("err.response", err.response)
+      handleMessage(err.response?.data?.error || err.message)
+      return Promise.reject(err)
+    },
+  )
 
   return (
     <UserContext.Provider value={{ user, changeUser, logOut }}>
