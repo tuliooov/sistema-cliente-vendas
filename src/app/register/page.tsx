@@ -10,24 +10,15 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { ISchemaLogin, schemaLogin } from "./schema";
+import { ISchemaRegisterBusiness, schemaRegister } from "./schema";
 import axios from "axios";
 import { LoadingButton } from "@mui/lab";
 import { useUser } from "@/contexts/userContext";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import {
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  NativeSelect,
-  Select,
-} from "@mui/material";
-import { IBusiness } from "@/pages/api/oauth/business";
+import { useState } from "react";
 import { ThemeModeEnum, useTheme } from "@/contexts/themeContext";
 
-export default function SignInSide() {
+export default function Register() {
   const { push } = useRouter();
   const {modeTheme} = useTheme()
 
@@ -35,42 +26,25 @@ export default function SignInSide() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ISchemaLogin>({
-    resolver: zodResolver(schemaLogin),
+  } = useForm<ISchemaRegisterBusiness>({
+    resolver: zodResolver(schemaRegister),
   });
-  const [business, setBusiness] = useState<IBusiness[]>([]);
   const [loading, setLoading] = useState(false);
-  const { changeUser, logOut } = useUser();
+  const { changeUser } = useUser();
 
-  const onSubmit = async (data: ISchemaLogin) => {
+  const onSubmit = async (data: ISchemaRegisterBusiness) => {
     console.log(data);
     try {
       setLoading(true);
-      const response = await axios.post("/api/oauth/login", data);
+      const response = await axios.post("/api/oauth/business/create", data);
+      console.log("🚀 ~ file: page.tsx:49 ~ onSubmit ~ response:", response)
       await changeUser(response.data.data);
       push("/dashboard");
     } catch (error) {
-      console.warn("Post login: ", error);
+      console.warn("Post register business: ", error);
       setLoading(false);
     }
   };
-
-  const fetchBusiness = async () => {
-    try {
-      const response = await axios.get("/api/oauth/business");
-      setBusiness(response.data.data);
-    } catch (error) {
-      console.warn("get business: ", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchBusiness();
-  }, []);
-
-  useEffect(() => {
-    logOut();
-  }, [logOut]);
 
   return (
     <>
@@ -116,6 +90,35 @@ export default function SignInSide() {
               sx={{mt: 2}}
             >
               <TextField
+                {...register("business")}
+                fullWidth
+                id="business"
+                label="Nome empresa"
+                name="business"
+                autoFocus
+                error={!!errors.business?.message}
+                helperText={errors.business?.message}
+              />
+              <TextField
+                {...register("userName")}
+                fullWidth
+                id="userName"
+                label="Nome administrador"
+                name="userName"
+                autoFocus
+                error={!!errors.userName?.message}
+                helperText={errors.business?.message}
+              />
+              <TextField
+                {...register("urlLogo")}
+                fullWidth
+                name="urlLogo"
+                label="URL Logo"
+                id="urlLogo"
+                error={!!errors.urlLogo?.message}
+                helperText={errors.urlLogo?.message}
+              />
+              <TextField
                 {...register("email")}
                 fullWidth
                 id="email"
@@ -137,28 +140,6 @@ export default function SignInSide() {
                 error={!!errors.password?.message}
                 helperText={errors.password?.message}
               />
-
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label" error={!!errors.business?.message}>Empresa</InputLabel>
-                <Select
-                  labelId={`business-select-label`}
-                  id={`business-select-label`}
-                  {...register("business")}
-                  label="Empresa"
-                  error={!!errors.business?.message}
-                >
-                  {business?.map((item) => (
-                    <MenuItem value={item.business} key={item.business}>
-                      {item.business}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {!!errors.business?.message && (
-                  <FormHelperText error>
-                    {errors.business.message}
-                  </FormHelperText>
-                )}
-              </FormControl>
               <LoadingButton
                 type="submit"
                 fullWidth
@@ -166,7 +147,7 @@ export default function SignInSide() {
                 variant="contained"
                 loading={loading}
               >
-                Entrar
+                Cadastrar
               </LoadingButton>
             </Box>
           </Box>

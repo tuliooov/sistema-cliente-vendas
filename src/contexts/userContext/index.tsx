@@ -58,6 +58,7 @@ export const UserProvider = ({ children }: { children: any }) => {
       (request: InternalAxiosRequestConfig<any>) => {
         if (request && !request.url?.includes("/api/oauth")) {
           if (!request?.headers?.Authorization) {
+            debugger
             logOut();
             return Promise.reject(new Error("Token expirado"));
           }
@@ -75,6 +76,7 @@ export const UserProvider = ({ children }: { children: any }) => {
           err.response.status === 403 &&
           err.response.data.error === "Token expirado"
         ) {
+          debugger
           logOut();
         }
         console.log("err.response", err.response);

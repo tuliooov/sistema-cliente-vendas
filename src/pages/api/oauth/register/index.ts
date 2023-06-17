@@ -3,6 +3,7 @@ import { parseBody } from "@/utils/parseBody";
 import prismaClient from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { jwtSystem } from "@/utils/jwt";
+import { getPermissions } from "@/utils/allowed";
 
 export const config = {
   api: {
@@ -60,10 +61,12 @@ export const createUser = async (
       business,
     },
   });
-  const { password, ...rest } = userCreated;
+  const { password, ...restUser } = userCreated;
 
-  const accessToken = await jwtSystem.signAccessToken(rest);
-  return res.json({ done: "ok", data: accessToken });
+  const accessToken = await jwtSystem.signAccessToken(restUser);
+  const permissions = getPermissions(restUser.type)
+
+  return res.json({ done: "ok", data: { ...restUser, accessToken, permissions } });
 };
 
 const handler: NextApiHandler = async (req, res) => {
