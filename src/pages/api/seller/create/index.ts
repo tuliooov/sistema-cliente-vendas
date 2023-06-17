@@ -22,7 +22,7 @@ const handler: NextApiHandler = async (req, res) => {
     const { seller, address } = requestBody.fields as ICreateSeller;
     const { userbusiness } = req.headers as HeadersRequest
 
-    if (!seller || !address || !userbusiness) {
+    if (!seller || !address || !userbusiness || !seller.password) {
       return res.status(200).json({ error: `Formulário incompleto.` });
     }
 
