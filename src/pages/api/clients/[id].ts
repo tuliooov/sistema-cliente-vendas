@@ -30,7 +30,7 @@ const handler: NextApiHandler = async (req, res) => {
     const response = await prismaClient.client.findFirst({
       where: {
         id: id as string,
-        business: userbusiness,
+        business: userbusiness
       },
       include: {
         address: true,
