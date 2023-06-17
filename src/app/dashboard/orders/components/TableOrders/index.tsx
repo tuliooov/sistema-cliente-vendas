@@ -137,8 +137,8 @@ export default function TableOrders() {
               seller.name,
               observation,
               total,
-              status,
               createdAt ? formattedDate(createdAt) : "-",
+              status,
               <Stack direction="row" spacing={1} key={id}>
                 <IconButton
                   aria-label="edit"
