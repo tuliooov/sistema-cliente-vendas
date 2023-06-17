@@ -23,9 +23,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
 
-  const { isDarkTheme } = useThemeDetector()
+  // const { isDarkTheme } = useThemeDetector()
 
-  const theme = isDarkTheme ? createTheme({
+  const theme = false ? createTheme({
     palette: {
       mode: "dark"
     }
@@ -39,7 +39,8 @@ export default function RootLayout({
     <html className={roboto.className} lang="pt-br">
       <head>
         <title>Controle de vendas</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content= "width=device-width, user-scalable=no" />
+        
         <meta name="description" content="Sistema de controle de vendas" />
         <link rel="icon" type="image/png" href="/favicon.png" />
         {/* PWA */}
