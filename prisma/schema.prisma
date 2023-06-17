@@ -21,15 +21,15 @@ model Business {
 }
 
 model User {
-  id        String     @id @default(auto()) @map("_id") @db.ObjectId
-  email     String
-  name      String
-  password  String
-  type      String
-  createdAt DateTime   @default(now())
-  updatedAt DateTime?  @updatedAt
-  business  String
-  business_associete  Business[]
+  id                 String     @id @default(auto()) @map("_id") @db.ObjectId
+  email              String
+  name               String
+  password           String
+  type               String
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime?  @updatedAt
+  business           String
+  business_associete Business[]
 }
 
 model Client {
