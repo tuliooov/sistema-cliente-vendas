@@ -6,10 +6,9 @@ import { ISchemaCrudClient } from "@/app/dashboard/clients/components/ModalCrudC
 
 export const config = {
   api: {
-    bodyParser: false,
+    bodyParser: true,
   },
 };
-
 type ICreateClient = ISchemaCrudClient;
 
 const handler: NextApiHandler = async (req, res) => {

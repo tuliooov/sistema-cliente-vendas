@@ -2,34 +2,43 @@ import { NextApiHandler } from "next";
 import { parseBody } from "@/utils/parseBody";
 import prismaClient from "@/lib/prisma";
 import { middleware } from "@/utils/helper/middleware";
-import { ISchemaCrudProduct } from "@/app/dashboard/products/components/ModalCrudProduct/schema";
 
 export const config = {
   api: {
-    bodyParser: true,
+    bodyParser: false,
   },
 };
 
-type ICreateProduct = ISchemaCrudProduct;
+type IUpdateStatusOrder = {
+  id: string
+  status: string
+};
 
 const handler: NextApiHandler = async (req, res) => {
-  if (req.method === "POST") {
+  if (req.method === "PATCH") {
     const requestBody = (await parseBody(req)) as any;
 
-    const { name, stock } = requestBody.fields as ICreateProduct;
+    const { id, status } =
+      requestBody.fields as IUpdateStatusOrder;
 
-    if (!name || !stock) {
+    if (!id) {
+      return res.status(200).json({ error: `Pedido não identificado.` });
+    }
+
+    if (!status) {
       return res.status(200).json({ error: `Formulário incompleto.` });
     }
 
-    const createdUser = await prismaClient.product.create({
+    const updatedUser = await prismaClient.order.update({
+      where: {
+        id: id,
+      },
       data: {
-        name,
-        stock,
+        status: status,
       },
     });
 
-    res.json({ done: "ok", data: createdUser });
+    res.json({ done: "ok", data: updatedUser });
   } else {
     res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
   }

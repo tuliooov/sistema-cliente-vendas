@@ -1,3 +1,4 @@
+import { IAlloweds, getPermissions } from './../../../../utils/allowed/index';
 import { NextApiHandler } from "next";
 import { parseBody } from "@/utils/parseBody";
 import prismaClient from "@/lib/prisma";
@@ -5,10 +6,12 @@ import { middleware } from "@/utils/helper/middleware";
 import { ISchemaLogin } from "@/app/schema";
 import bcrypt from "bcryptjs";
 import { jwtSystem } from "@/utils/jwt";
+import { User } from "@prisma/client";
+import { ITypeUserEnum } from '../register';
 
 export const config = {
   api: {
-    bodyParser: false,
+    bodyParser: true,
   },
 };
 
@@ -17,14 +20,18 @@ interface IDataRequest {
   password: string;
 }
 
+
 export interface IUser {
   id: string;
   email: string;
   name: string;
   accessToken: string;
+  type: ITypeUserEnum;
   createdAt: string
   updatedAt: string
+  permissions: IAlloweds
 }
+
 
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "POST") {
@@ -35,7 +42,7 @@ const handler: NextApiHandler = async (req, res) => {
     if (!email || !pass) {
       return res.status(200).json({ error: `Formulário incompleto.` });
     }
-
+    
     const userFound = await prismaClient.user.findUnique({
       where: {
         email,
@@ -52,10 +59,13 @@ const handler: NextApiHandler = async (req, res) => {
         res.status(400).json({ error: 'Senha incorreta' });
       }
       
-      const {password, ...rest} = userFound
-      const accessToken = await jwtSystem.signAccessToken(rest)
-      res.json({ done: "ok", data: { ...rest, accessToken } });
+      const {password, ...restUser} = userFound
+      const accessToken = await jwtSystem.signAccessToken(restUser)
+      const permissions = getPermissions(restUser.type)
+
+      res.json({ done: "ok", data: { ...restUser, accessToken, permissions } });
     }
+    res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
   } else {
     res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
   }

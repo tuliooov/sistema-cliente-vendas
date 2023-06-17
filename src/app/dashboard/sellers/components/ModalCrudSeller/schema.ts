@@ -7,6 +7,7 @@ export const schemaAddSeller = z.object({
     name: z.string().nonempty("O nome é obrigatório"),
     phone: z.string().nonempty("O telefone é obrigatório"),
     email: z.string().email("Insira um endereço de e-mail válido"),
+    password: z.string().nonempty("A senha é obrigatória"),
     cnpj: z.string().nonempty("Insira um cnpj válido"),
     observation: z.string().nonempty("A observação é obrigatório"),
   }),

@@ -1,6 +1,6 @@
 "use client";
 
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -18,6 +18,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { MainListItems } from "./MenuOptions";
 import { useUser } from "@/contexts/userContext";
+import { Grid } from "@mui/material";
 
 function Copyright(props: any) {
   return (
@@ -92,7 +93,7 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ children }: DashboardProps) {
-  const { logOut } = useUser();
+  const { logOut, user } = useUser();
 
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
@@ -129,14 +130,21 @@ export default function Dashboard({ children }: DashboardProps) {
           >
             DT Chapa Forte
           </Typography>
+          <Grid display={"flex"} alignItems={"center"} gap={"1rem"}>
+            <Typography
+              component="p"
+              variant="body1"
+              color="inherit"
+              noWrap
+              sx={{ flexGrow: 1 }}
+            >
+              {user?.name}
+            </Typography>
 
-          <IconButton
-            edge="end"
-            color="inherit"
-            onClick={logOut}
-          >
-            <LogoutIcon />
-          </IconButton>
+            <IconButton edge="end" color="inherit" onClick={logOut}>
+              <LogoutIcon />
+            </IconButton>
+          </Grid>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>

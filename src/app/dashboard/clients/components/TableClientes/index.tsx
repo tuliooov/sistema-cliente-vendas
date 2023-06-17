@@ -27,7 +27,7 @@ export interface IModal {
 }
 
 export default function TableClientes() {
-  const [clients, setClients] = useState<IClients>();
+  const [clients, setClients] = useState<IClients>([]);
   const [loading, setLoading] = useState(true);
   const [modalSettings, setModalSettings] = useState<IModal>({
     open: false,
@@ -115,7 +115,7 @@ export default function TableClientes() {
           <Loading />
         </>
       )}
-      {!loading && !!clients?.length && (
+      {!loading && (
         <TableStyled
           titles={[
             "Empresa",

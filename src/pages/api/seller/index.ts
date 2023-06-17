@@ -16,6 +16,7 @@ export interface ISeller {
   observation: string;
   createdAt: string;
   phone: string;
+  password: string;
   email: string;
   cnpj: string;
   orders: IOrders;

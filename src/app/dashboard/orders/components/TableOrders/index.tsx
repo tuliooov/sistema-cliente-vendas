@@ -3,15 +3,16 @@
 import axios from "axios";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useEffect, useState } from "react";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, IconButton, Typography } from "@mui/material";
 import { IOrders } from "@/pages/api/orders";
 import ModalAddOrder from "../ModalCrudOrder";
 import { formattedDate } from "@/utils/formatDate";
 import Stack from "@mui/material/Stack";
-import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import { TableStyled } from "@/components/Table";
 import { Loading } from "@/components/Loading";
+import { useUser } from "@/contexts/userContext";
+import { ApproveButton } from "./ApproveButton";
 
 export interface IModal {
   open: boolean;
@@ -23,7 +24,10 @@ export interface IModal {
 }
 
 export default function TableOrders() {
-  const [orders, setOrders] = useState<IOrders>();
+  const { user } = useUser()
+  const  ordersPage = user?.permissions?.ordersPage || {}
+
+  const [orders, setOrders] = useState<IOrders>([]);
   const [loading, setLoading] = useState(true);
   const [modalSettings, setModalSettings] = useState<IModal>({
     open: false,
@@ -32,7 +36,7 @@ export default function TableOrders() {
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("/api/orders");
+      const response = await axios.get(`/api/orders`);
       setOrders(response.data.data);
     } catch (error) {
       console.warn("Get orders: ", error);
@@ -52,6 +56,7 @@ export default function TableOrders() {
   const handleModalSettings = (value: IModal) => {
     setModalSettings(value);
   };
+
 
   const handleEdit = (id?: string, code?: string) => () => {
     handleModalSettings({
@@ -113,7 +118,7 @@ export default function TableOrders() {
           <Loading />
         </>
       )}
-      {!loading && !!orders?.length && (
+      {!loading && (
         <TableStyled
           titles={[
             "Código",
@@ -122,15 +127,17 @@ export default function TableOrders() {
             "Observação",
             "Total",
             "Data Cadastro",
+            "Status",
             "Opções",
           ]}
-          data={orders.map(({ id, code, client, seller, total, observation, createdAt }) => {
+          data={orders.map(({ id, code, client, seller, total, observation, status, createdAt }) => {
             return [
               code,
               client.nameFantasy,
               seller.name,
               observation,
               total,
+              status,
               createdAt ? formattedDate(createdAt) : "-",
               <Stack direction="row" spacing={1} key={id}>
                 <IconButton
@@ -147,6 +154,13 @@ export default function TableOrders() {
                 >
                   <VisibilityIcon />
                 </IconButton>
+                {
+                  ordersPage?.approve && <ApproveButton
+                  id={id}
+                  refreshOrders={refreshOrders} 
+                  status={status}
+                  />
+                }
               </Stack>,
             ];
           })}

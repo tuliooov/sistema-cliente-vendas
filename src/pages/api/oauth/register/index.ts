@@ -6,7 +6,7 @@ import { jwtSystem } from "@/utils/jwt";
 
 export const config = {
   api: {
-    bodyParser: false,
+    bodyParser: true,
   },
 };
 
@@ -16,12 +16,51 @@ interface IDataRequest {
   password: string;
 }
 
-interface IUser {
-  id: string;
-  email: string;
-  name: string;
-  accessToken: unknown;
+export enum ITypeUserEnum {
+  "ADMIN" = "ADMIN",
+  "SELLER" = "SELLER"
 }
+
+export const findUser = async (email: string, res: any) => {
+  const userFound = await prismaClient.user.findUnique({
+    where: {
+      email,
+    },
+  });
+  if (userFound) {
+    return res.status(400).json({ error: `Usuãrio ${email} ja existe` });
+  }
+};
+
+export const createUser = async (
+  pass: string,
+  name: string,
+  email: string,
+  type: ITypeUserEnum,
+  res: any
+) => {
+  if (!email || !pass || !name || !type) {
+    return res.status(200).json({ error: `Formulário incompleto.` });
+  }
+
+  
+  await findUser(email, res);
+
+  const passwordCript = bcrypt.hashSync(pass, 8);
+
+  const userCreated = await prismaClient.user.create({
+    data: {
+      email,
+      password: passwordCript,
+      name,
+      type,
+    },
+  });
+  const { password, ...rest } = userCreated;
+
+  const accessToken = await jwtSystem.signAccessToken(rest);
+  return res.json({ done: "ok", data: accessToken });
+};
 
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "POST") {
@@ -29,33 +68,7 @@ const handler: NextApiHandler = async (req, res) => {
 
     const { email, password: pass, name } = requestBody.fields as IDataRequest;
 
-    if (!email || !pass || !name) {
-      return res.status(200).json({ error: `Formulário incompleto.` });
-    }
-
-    const userFound = await prismaClient.user.findUnique({
-      where: {
-        email,
-      },
-    });
-
-    if (userFound) {
-      res.status(400).json({ error: `Usuãrio ${email} ja existe` });
-    } else {
-      const passwordCript = bcrypt.hashSync(pass, 8);
-      let userCreated = await prismaClient.user.create({
-        data: {
-          email,
-          password: passwordCript,
-          name,
-        },
-      });
-
-      const {password, ...rest} = userCreated
-
-      const accessToken = await jwtSystem.signAccessToken(rest);
-      res.json({ done: "ok", data: accessToken });
-    }
+    await createUser(pass, name, email, ITypeUserEnum.ADMIN, res);
   } else {
     res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
   }

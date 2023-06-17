@@ -22,7 +22,7 @@ export interface IModal {
 }
 
 export default function TableSellers() {
-  const [sellers, setSellers] = useState<ISellers>();
+  const [sellers, setSellers] = useState<ISellers>([]);
   const [loading, setLoading] = useState(true);
   const [modalSettings, setModalSettings] = useState<IModal>({
     open: false,
@@ -110,7 +110,7 @@ export default function TableSellers() {
           <Loading />
         </>
       )}
-      {!loading && !!sellers?.length && (
+      {!loading && (
         <TableStyled
           titles={["Nome", "Cidade", "Observação", "Data Cadastro", "Opções"]}
           data={sellers.map(({ id, name, address, observation, createdAt }) => {

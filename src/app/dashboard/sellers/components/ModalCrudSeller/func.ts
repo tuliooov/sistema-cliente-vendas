@@ -11,6 +11,7 @@ export const mapperSellerToForm = (
     name: seller.name,
     email: seller.email,
     phone: seller.phone,
+    password: seller.password,
     cnpj: seller.cnpj,
     observation: seller.observation,
   });

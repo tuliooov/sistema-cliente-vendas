@@ -1,8 +1,8 @@
+"use client"
+
 import { CircularProgress } from "@mui/material"
 
 export const Loading = () => {
-
-
   return (
     <div style={{
       width: '100%',
@@ -13,5 +13,4 @@ export const Loading = () => {
       <CircularProgress />
     </div>
   )
-
 }

@@ -15,6 +15,7 @@ model User {
   email     String    @unique
   name      String
   password  String
+  type      String
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 }
@@ -40,7 +41,7 @@ model Seller {
   name        String
   observation String
   phone       String
-  email       String
+  email       String         @unique
   cnpj        String
   address     AddressSeller?
   orders      Order[]
@@ -82,6 +83,7 @@ model Order {
   id              String           @id @default(auto()) @map("_id") @db.ObjectId
   code            String           @unique
   observation     String
+  status          String
   deliveryAddress DeliveryAddress?
   client          Client           @relation(fields: [clientId], references: [id])
   clientId        String           @db.ObjectId

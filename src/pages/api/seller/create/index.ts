@@ -1,12 +1,14 @@
+import { ITypeUserEnum, findUser } from './../../oauth/register/index';
 import { NextApiHandler } from "next";
 import { parseBody } from "@/utils/parseBody";
 import prismaClient from "@/lib/prisma";
 import { middleware } from "@/utils/helper/middleware";
 import { ISchemaCrudSeller } from "@/app/dashboard/sellers/components/ModalCrudSeller/schema";
+import { createUser } from "../../oauth/register";
 
 export const config = {
   api: {
-    bodyParser: false,
+    bodyParser: true,
   },
 };
 
@@ -22,9 +24,13 @@ const handler: NextApiHandler = async (req, res) => {
       return res.status(200).json({ error: `Formulário incompleto.` });
     }
 
+    const {password, ...restSeller} = seller
+
+    await findUser(restSeller.email, res)
+    
     const createdUser = await prismaClient.seller.create({
       data: {
-        ...seller,
+        ...restSeller,
         address: {
           create: {
             ...address,
@@ -36,6 +42,8 @@ const handler: NextApiHandler = async (req, res) => {
       },
     });
 
+
+    await createUser(password, restSeller.name, restSeller.email, ITypeUserEnum.SELLER, res);
 
     res.json({ done: "ok", data: createdUser });
   } else {

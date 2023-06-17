@@ -12,6 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import { TableStyled } from "@/components/Table";
 import { Loading } from "@/components/Loading";
+import { useUser } from "@/contexts/userContext";
 export interface IModal {
   open: boolean;
   type?: "add" | "edit" | "view";
@@ -21,7 +22,11 @@ export interface IModal {
 }
 
 export default function TableProducts() {
-  const [products, setProducts] = useState<IProducts>();
+  const { user } = useUser();
+  
+  const productsPage = user?.permissions?.productsPage || {}
+
+  const [products, setProducts] = useState<IProducts>([]);
   const [loading, setLoading] = useState(true);
   const [modalSettings, setModalSettings] = useState<IModal>({
     open: false,
@@ -92,9 +97,11 @@ export default function TableProducts() {
           </Typography>
         </Grid>
         <Grid item xs={6} textAlign="end">
-          <Button variant="contained" onClick={handleAdd}>
-            Adicionar produtos
-          </Button>
+          {productsPage.create && (
+            <Button variant="contained" onClick={handleAdd}>
+              Adicionar produtos
+            </Button>
+          )}
           {modalSettings.open && (
             <ModalAddProduct
               refreshProducts={refreshProducts}
@@ -109,7 +116,7 @@ export default function TableProducts() {
           <Loading />
         </>
       )}
-      {!loading && !!products?.length && (
+      {!loading && (
         <TableStyled
           titles={["Nome", "Estoque", "Data Cadastro", "Opções"]}
           data={products.map(({ id, name, stock, createdAt }) => {
@@ -118,20 +125,24 @@ export default function TableProducts() {
               stock,
               formattedDate(createdAt),
               <Stack direction="row" spacing={1} key={id}>
-                <IconButton
-                  aria-label="edit"
-                  color="error"
-                  onClick={handleEdit(id)}
-                >
-                  <EditIcon />
-                </IconButton>
-                <IconButton
-                  aria-label="visibility"
-                  color="success"
-                  onClick={handleView(id)}
-                >
-                  <VisibilityIcon />
-                </IconButton>
+                {productsPage.update && (
+                  <IconButton
+                    aria-label="edit"
+                    color="error"
+                    onClick={handleEdit(id)}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                )}
+                {productsPage.view && (
+                  <IconButton
+                    aria-label="visibility"
+                    color="success"
+                    onClick={handleView(id)}
+                  >
+                    <VisibilityIcon />
+                  </IconButton>
+                )}
               </Stack>,
             ];
           })}

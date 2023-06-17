@@ -1,4 +1,13 @@
-import { Paper, styled, TableCell, tableCellClasses, TableHead, TableRow } from "@mui/material";
+import {
+  Grid,
+  Paper,
+  styled,
+  TableCell,
+  tableCellClasses,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
@@ -6,7 +15,7 @@ import { ReactNode } from "react";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-  backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -29,7 +38,7 @@ interface TableProps {
   data: ReactNode[][];
 }
 
-export const TableStyled = ({ titles, data }: TableProps) => {
+export const TableStyled = ({ titles, data = [] }: TableProps) => {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -41,17 +50,24 @@ export const TableStyled = ({ titles, data }: TableProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row, index) => (
-            <StyledTableRow key={index}>
-              {row.map((cell, index) => (
-                <StyledTableCell key={index} component="th" scope="row">
-                  {cell ?? '-'}
-                </StyledTableCell>
-              ))}
-            </StyledTableRow>
-          ))}
+          {!!data.length &&
+            data.map((row, index) => (
+              <StyledTableRow key={index}>
+                {row.map((cell, index) => (
+                  <StyledTableCell key={index} component="th" scope="row">
+                    {cell ?? "-"}
+                  </StyledTableCell>
+                ))}
+              </StyledTableRow>
+            ))}
         </TableBody>
       </Table>
+
+      {!data.length && (
+        <Grid padding={"1em"} textAlign={"center"} width={"100%"}>
+          <Typography>Nenhum dado encontrado.</Typography>
+        </Grid>
+      )}
     </TableContainer>
   );
 };

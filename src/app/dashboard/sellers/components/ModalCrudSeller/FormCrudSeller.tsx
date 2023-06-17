@@ -7,6 +7,14 @@ import Container from "@mui/material/Container";
 import { Divider, Typography } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { ISchemaCrudSeller } from "./schema";
+import { IncomingHttpHeaders } from "http";
+
+export interface HeadersRequest extends IncomingHttpHeaders {
+  userid?: string;
+  usertype?: string;
+  useremail?: string;
+  authorization?: string;
+}
 
 interface FormCrudSellerProps {
   loading: boolean;
@@ -71,6 +79,17 @@ export default function FormCrudSeller({
               {...register("seller.email")}
               error={!!errors.seller?.email}
               helperText={errors.seller?.email?.message}
+              disabled={disabled}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <TextField
+              fullWidth
+              id="password"
+              label="Senha"
+              {...register("seller.password")}
+              error={!!errors.seller?.password}
+              helperText={errors.seller?.password?.message}
               disabled={disabled}
             />
           </Grid>
