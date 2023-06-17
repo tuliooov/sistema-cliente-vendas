@@ -35,9 +35,9 @@ const handler: NextApiHandler = async (req, res) => {
           create: {
             business,
             email,
-            name: userName,
             password: passwordCript,
-            type: 'ADMIN',
+            type: ITypeUserEnum.ADMIN,
+            name: userName,
           }
         }
       },
