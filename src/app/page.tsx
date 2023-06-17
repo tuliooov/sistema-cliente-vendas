@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import {
   FormControl,
   FormHelperText,
+  InputLabel,
   MenuItem,
   NativeSelect,
   Select,
@@ -55,7 +56,10 @@ export default function SignInSide() {
   const fetchBusiness = async () => {
     try {
       const response = await axios.get("/api/oauth/business");
-      console.log("🚀 ~ file: page.tsx:55 ~ fetchBusiness ~ response:", response)
+      console.log(
+        "🚀 ~ file: page.tsx:55 ~ fetchBusiness ~ response:",
+        response
+      );
       setBusiness(response.data.data);
     } catch (error) {
       console.warn("get business: ", error);
@@ -109,13 +113,12 @@ export default function SignInSide() {
               onSubmit={handleSubmit(onSubmit)}
               display={"flex"}
               flexDirection={"column"}
-              gap={"1rem"}
+              gap={"2rem"}
               width={"100%"}
+              sx={{mt: 2}}
             >
               <TextField
                 {...register("email")}
-                margin="normal"
-                required
                 fullWidth
                 id="email"
                 label="Email"
@@ -127,8 +130,6 @@ export default function SignInSide() {
               />
               <TextField
                 {...register("password")}
-                margin="normal"
-                required
                 fullWidth
                 name="password"
                 label="Senha"
@@ -137,14 +138,16 @@ export default function SignInSide() {
                 autoComplete="current-password"
                 error={!!errors.password?.message}
                 helperText={errors.password?.message}
-
               />
+
               <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label" error={!!errors.business?.message}>Empresa</InputLabel>
                 <Select
                   labelId={`business-select-label`}
                   id={`business-select-label`}
                   {...register("business")}
                   label="Empresa"
+                  error={!!errors.business?.message}
                 >
                   {business?.map((item) => (
                     <MenuItem value={item.business} key={item.business}>
@@ -161,8 +164,8 @@ export default function SignInSide() {
               <LoadingButton
                 type="submit"
                 fullWidth
+                size="large"
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
                 loading={loading}
               >
                 Entrar

@@ -1,9 +1,9 @@
 export default function Head() {
   return (
     <>
-      <title>Sistema Cliente Venda</title>
-      <meta content="width=device-width, initial-scale=1" name="viewport" />
-      <meta name="description" content="Cadastro de clientes e de vendas." />
+      <title>Controle de vendas</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta name="description" content="Sistema de controle de vendas" />
       <link rel="icon" type="image/png" href="./favicon.png" />
     </>
   );
