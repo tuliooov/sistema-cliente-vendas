@@ -25,9 +25,11 @@ import {
   Select,
 } from "@mui/material";
 import { IBusiness } from "@/pages/api/oauth/business";
+import { ThemeModeEnum, useTheme } from "@/contexts/themeContext";
 
 export default function SignInSide() {
   const { push } = useRouter();
+  const {modeTheme} = useTheme()
 
   const {
     register,
@@ -87,14 +89,14 @@ export default function SignInSide() {
             backgroundImage: "url(/wallpaper.jpg)",
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
-              t.palette.mode === "light"
+              modeTheme === ThemeModeEnum.light
                 ? t.palette.grey[50]
                 : t.palette.grey[900],
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
         />
-        <Grid item xs={12} sm={7} md={4} component={Paper} elevation={6} square>
+        <Grid item xs={12} sm={7} md={4} component={Paper} elevation={6} square> 
           <Box
             sx={{
               my: 8,
