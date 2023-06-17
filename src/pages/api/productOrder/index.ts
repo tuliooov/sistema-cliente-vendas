@@ -6,7 +6,7 @@ import { IProductComplete } from "../products/[id]";
 
 export const config = {
   api: {
-    bodyParser: false,
+    bodyParser: true,
   },
 };
 

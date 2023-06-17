@@ -11,7 +11,7 @@ import { IStatusEnum } from "@/utils/enums";
 
 export const config = {
   api: {
-    bodyParser: false,
+    bodyParser: true,
   },
 };
 

@@ -6,7 +6,7 @@ import { IDeliveryAddress } from "../deliveryAddress";
 
 export const config = {
   api: {
-    bodyParser: false,
+    bodyParser: true,
   },
 };
 

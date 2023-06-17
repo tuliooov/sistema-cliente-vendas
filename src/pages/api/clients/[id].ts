@@ -6,7 +6,7 @@ import { IAddress } from "../address";
 
 export const config = {
   api: {
-    bodyParser: false,
+    bodyParser: true,
   },
 };
 

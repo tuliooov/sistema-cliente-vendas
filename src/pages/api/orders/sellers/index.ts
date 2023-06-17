@@ -6,7 +6,7 @@ import { HeadersRequest } from "@/app/dashboard/sellers/components/ModalCrudSell
 
 export const config = {
   api: {
-    bodyParser: false,
+    bodyParser: true,
   },
 };
 

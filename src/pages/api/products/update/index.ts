@@ -6,7 +6,7 @@ import { ISchemaCrudProduct } from "@/app/dashboard/products/components/ModalCru
 
 export const config = {
   api: {
-    bodyParser: false,
+    bodyParser: true,
   },
 };
 

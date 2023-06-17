@@ -6,7 +6,7 @@ import { ISchemaCrudOrder } from "@/app/dashboard/orders/components/ModalCrudOrd
 
 export const config = {
   api: {
-    bodyParser: false,
+    bodyParser: true,
   },
 };
 

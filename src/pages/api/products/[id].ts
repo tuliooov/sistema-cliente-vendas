@@ -5,7 +5,7 @@ import { middleware } from "@/utils/helper/middleware";
 
 export const config = {
   api: {
-    bodyParser: false,
+    bodyParser: true,
   },
 };
 
