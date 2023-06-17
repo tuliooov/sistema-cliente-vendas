@@ -5,12 +5,15 @@ import "../styles/global.css";
 import { Roboto } from "@next/font/google";
 import { UserProvider } from "@/contexts/userContext";
 import { SnackbarProvider } from "material-ui-snackbar-provider";
-import { ThemeSystemProvider } from "@/contexts/themeContext";
+import { ThemeProvider, createTheme } from "@mui/material";
+import { useThemeDetector } from "@/contexts/useThemeDetector";
 
 const roboto = Roboto({
   subsets: ["latin"],
   weight: ["700", "400", "500"],
 });
+
+
 
 
 
@@ -20,6 +23,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
 
+  const { isDarkTheme } = useThemeDetector()
+
+  const theme = isDarkTheme ? createTheme({
+    palette: {
+      mode: "dark"
+    }
+  }) : createTheme({
+    palette: {
+      mode: "light"
+    }
+  })
 
   return (
     <html className={roboto.className} lang="pt-br">
@@ -36,9 +50,9 @@ export default function RootLayout({
       <body>
         <SnackbarProvider SnackbarProps={{ autoHideDuration: 4000 }}>
           <UserProvider>
-            <ThemeSystemProvider>
+            <ThemeProvider theme={theme}>
               {children}
-            </ThemeSystemProvider>
+            </ThemeProvider>
           </UserProvider>
         </SnackbarProvider>
       </body>

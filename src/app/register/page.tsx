@@ -16,11 +16,9 @@ import { LoadingButton } from "@mui/lab";
 import { useUser } from "@/contexts/userContext";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ThemeModeEnum, useTheme } from "@/contexts/themeContext";
 
 export default function Register() {
   const { push } = useRouter();
-  const {modeTheme} = useTheme()
 
   const {
     register,
@@ -58,10 +56,6 @@ export default function Register() {
           sx={{
             backgroundImage: "url(/wallpaper.jpg)",
             backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              modeTheme === ThemeModeEnum.light
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}

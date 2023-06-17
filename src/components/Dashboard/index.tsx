@@ -21,7 +21,7 @@ import { useUser } from "@/contexts/userContext";
 import { Grid } from "@mui/material";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import { ThemeModeEnum, useTheme } from "@/contexts/themeContext";
+import {  useThemeDetector } from "@/contexts/useThemeDetector";
 
 function Copyright(props: any) {
   return (
@@ -97,8 +97,7 @@ interface DashboardProps {
 
 export default function Dashboard({ children }: DashboardProps) {
   const { logOut, user } = useUser();
-
-  const { swapTheme, modeTheme } = useTheme();
+  const {isDarkTheme, swapTheme} = useThemeDetector()
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -150,7 +149,7 @@ export default function Dashboard({ children }: DashboardProps) {
             )}
 
             <IconButton edge="end" color="inherit" onClick={swapTheme}>
-              {modeTheme === ThemeModeEnum.dark ? (
+              {isDarkTheme ? (
                 <LightModeIcon />
                 ) : (
                 <DarkModeIcon />

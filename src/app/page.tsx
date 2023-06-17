@@ -21,15 +21,13 @@ import {
   FormHelperText,
   InputLabel,
   MenuItem,
-  NativeSelect,
   Select,
 } from "@mui/material";
 import { IBusiness } from "@/pages/api/oauth/business";
-import { ThemeModeEnum, useTheme } from "@/contexts/themeContext";
 
 export default function SignInSide() {
+  "use client"
   const { push } = useRouter();
-  const {modeTheme} = useTheme()
 
   const {
     register,
@@ -72,6 +70,7 @@ export default function SignInSide() {
     logOut();
   }, [logOut]);
 
+
   return (
     <>
       <Grid container component="main" sx={{ height: "100vh" }}>
@@ -84,10 +83,6 @@ export default function SignInSide() {
           sx={{
             backgroundImage: "url(/wallpaper.jpg)",
             backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              modeTheme === ThemeModeEnum.light
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -102,7 +97,7 @@ export default function SignInSide() {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
             <Box
@@ -121,7 +116,6 @@ export default function SignInSide() {
                 id="email"
                 label="Email"
                 name="email"
-                autoComplete="email"
                 autoFocus
                 error={!!errors.email?.message}
                 helperText={errors.email?.message}
@@ -133,7 +127,6 @@ export default function SignInSide() {
                 label="Senha"
                 type="password"
                 id="password"
-                autoComplete="current-password"
                 error={!!errors.password?.message}
                 helperText={errors.password?.message}
               />
