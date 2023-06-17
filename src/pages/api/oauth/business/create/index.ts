@@ -14,12 +14,12 @@ export const config = {
 };
 type ICreateBusiness = ISchemaRegisterBusiness;
 
-
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "POST") {
     const requestBody = (await parseBody(req)) as any;
 
-    const { business, email, password, userName, urlLogo } = requestBody.fields as ICreateBusiness;
+    const { business, email, password, userName, urlLogo } =
+      requestBody.fields as ICreateBusiness;
 
     if (!business || !email || !password || !userName || !urlLogo) {
       return res.status(200).json({ error: `Formulário incompleto.` });
@@ -38,8 +38,8 @@ const handler: NextApiHandler = async (req, res) => {
             password: passwordCript,
             type: ITypeUserEnum.ADMIN,
             name: userName,
-          }
-        }
+          },
+        },
       },
       include: {
         user: true
@@ -50,9 +50,12 @@ const handler: NextApiHandler = async (req, res) => {
 
     const accessToken = await jwtSystem.signAccessToken(restUser);
 
-    const permissions = getPermissions(restUser.type)
+    const permissions = getPermissions(restUser.type);
 
-    return res.json({ done: "ok", data: { ...restUser, accessToken, permissions } });
+    return res.json({
+      done: "ok",
+      data: { ...restUser, accessToken, permissions },
+    });
   } else {
     res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
   }
