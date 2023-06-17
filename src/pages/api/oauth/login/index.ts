@@ -65,7 +65,6 @@ const handler: NextApiHandler = async (req, res) => {
 
       res.json({ done: "ok", data: { ...restUser, accessToken, permissions } });
     }
-    res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
   } else {
     res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
   }
