@@ -11,11 +11,11 @@ import { IncomingHttpHeaders } from "http";
 import { IModal } from "../TableSellers";
 
 export interface HeadersRequest extends IncomingHttpHeaders {
-  userid?: string;
-  usertype?: string;
-  useremail?: string;
-  userbusiness?: string;
-  authorization?: string;
+  userid: string;
+  usertype: string;
+  useremail: string;
+  userbusiness: string;
+  authorization: string;
 }
 
 interface FormCrudSellerProps {

@@ -20,7 +20,7 @@ const handler: NextApiHandler = async (req, res) => {
     const { id } = req.query;
     const { userbusiness } = req.headers  as HeadersRequest
 
-    if (!id) {
+    if (!id || !userbusiness) {
       return res
         .status(200)
         .json({ error: `Não identificamos o ID do cliente.` });
