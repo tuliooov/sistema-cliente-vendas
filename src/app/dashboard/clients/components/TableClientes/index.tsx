@@ -93,7 +93,7 @@ export default function TableClientes() {
         alignItems={"center"}
       >
         <Grid item xs={6}>
-          <Typography variant="h2" gutterBottom>
+          <Typography variant="h2" gutterBottom color="text.primary">
             Clientes
           </Typography>
         </Grid>

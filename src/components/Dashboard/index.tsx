@@ -19,6 +19,9 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { MainListItems } from "./MenuOptions";
 import { useUser } from "@/contexts/userContext";
 import { Grid } from "@mui/material";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import { ThemeModeEnum, useTheme } from "@/contexts/themeContext";
 
 function Copyright(props: any) {
   return (
@@ -95,6 +98,7 @@ interface DashboardProps {
 export default function Dashboard({ children }: DashboardProps) {
   const { logOut, user } = useUser();
 
+  const { swapTheme, modeTheme } = useTheme();
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -121,25 +125,37 @@ export default function Dashboard({ children }: DashboardProps) {
           >
             <MenuIcon />
           </IconButton>
-          {!!user.business && <Typography
-            component="h1"
-            variant="h6"
-            color="inherit"
-            noWrap
-            sx={{ flexGrow: 1 }}
-          >
-            {user.business}
-          </Typography>}
-          <Grid display={"flex"} alignItems={"center"} gap={"1rem"}>
-            {!!user?.name && <Typography
-              component="p"
-              variant="body1"
+          {!!user.business && (
+            <Typography
+              component="h1"
+              variant="h6"
               color="inherit"
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              {user?.name}
-            </Typography>}
+              {user.business?.toUpperCase()}
+            </Typography>
+          )}
+          <Grid display={"flex"} alignItems={"center"} gap={"1rem"}>
+            {!!user?.name && (
+              <Typography
+                component="p"
+                variant="body1"
+                color="inherit"
+                noWrap
+                sx={{ flexGrow: 1 }}
+              >
+                {user?.name?.toUpperCase()}
+              </Typography>
+            )}
+
+            <IconButton edge="end" color="inherit" onClick={swapTheme}>
+              {modeTheme === ThemeModeEnum.dark ? (
+                <LightModeIcon />
+                ) : (
+                <DarkModeIcon />
+              )}
+            </IconButton>
 
             <IconButton edge="end" color="inherit" onClick={logOut}>
               <LogoutIcon />
@@ -178,10 +194,16 @@ export default function Dashboard({ children }: DashboardProps) {
         }}
       >
         <Toolbar />
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Container
+          maxWidth="lg"
+          sx={{ mt: 4, mb: 4 }}
+          style={{
+            minHeight: "calc(100vh - 200px)",
+          }}
+        >
           {children}
-          <Copyright sx={{ pt: 4 }} />
         </Container>
+        <Copyright sx={{ pt: 4 }} />
       </Box>
     </Box>
   );

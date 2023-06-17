@@ -2,8 +2,8 @@
 
 I developed a screen where a user visualizes and registers carnival blocks.
 
-<img width="807" alt="image" src="/public/github/search.png">
-<img width="807" alt="image" src="/public/github/blocos.png">
+<!-- <img width="807" alt="image" src="/public/github/search.png">
+<img width="807" alt="image" src="/public/github/blocos.png"> -->
 
 ## 🛠️ In this project was used
 

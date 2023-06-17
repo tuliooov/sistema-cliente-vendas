@@ -96,7 +96,7 @@ export default function TableOrders() {
         alignItems={"center"}
       >
         <Grid item xs={6}>
-          <Typography variant="h2" gutterBottom>
+          <Typography variant="h2" gutterBottom color="text.primary">
             Pedidos
           </Typography>
         </Grid>
