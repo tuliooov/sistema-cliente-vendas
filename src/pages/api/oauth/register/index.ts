@@ -14,6 +14,7 @@ interface IDataRequest {
   email: string;
   name: string;
   password: string;
+  business: string;
 }
 
 export enum ITypeUserEnum {
@@ -21,10 +22,11 @@ export enum ITypeUserEnum {
   "SELLER" = "SELLER"
 }
 
-export const findUser = async (email: string, res: any) => {
-  const userFound = await prismaClient.user.findUnique({
+export const findUser = async (email: string, business: string, res: any) => {
+  const userFound = await prismaClient.user.findFirst({
     where: {
       email,
+      business,
     },
   });
   if (userFound) {
@@ -37,14 +39,15 @@ export const createUser = async (
   name: string,
   email: string,
   type: ITypeUserEnum,
+  business: string,
   res: any
 ) => {
-  if (!email || !pass || !name || !type) {
+  if (!email || !pass || !name || !type || !business) {
     return res.status(200).json({ error: `Formulário incompleto.` });
   }
 
   
-  await findUser(email, res);
+  await findUser(email, business, res);
 
   const passwordCript = bcrypt.hashSync(pass, 8);
 
@@ -54,6 +57,7 @@ export const createUser = async (
       password: passwordCript,
       name,
       type,
+      business,
     },
   });
   const { password, ...rest } = userCreated;
@@ -66,9 +70,9 @@ const handler: NextApiHandler = async (req, res) => {
   if (req.method === "POST") {
     const requestBody = (await parseBody(req)) as any;
 
-    const { email, password: pass, name } = requestBody.fields as IDataRequest;
+    const { email, password: pass, name, business } = requestBody.fields as IDataRequest;
 
-    await createUser(pass, name, email, ITypeUserEnum.ADMIN, res);
+    await createUser(pass, name, email, ITypeUserEnum.ADMIN, business, res);
   } else {
     res.status(405).json({ error: `Method '${req.method}' Not Allowed` });
   }

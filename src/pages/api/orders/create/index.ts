@@ -31,14 +31,14 @@ const handler: NextApiHandler = async (req, res) => {
   if (req.method === "POST") {
     const requestBody = (await parseBody(req)) as any;
     
-    const { usertype } = req.headers  as HeadersRequest
+    const { usertype, userbusiness } = req.headers  as HeadersRequest
 
     const { deliveryAddress, order, products } =
       requestBody.fields as ICreateOrder;
 
     console.log(requestBody.fields);
 
-    if (!deliveryAddress || !order || !products.length) {
+    if (!deliveryAddress || !order || !products.length || !userbusiness) {
       return res.status(200).json({ error: `Formulário incompleto.` });
     }
 
@@ -46,6 +46,7 @@ const handler: NextApiHandler = async (req, res) => {
     const createdOrder = await prismaClient.order.create({
       data: {
         ...order,
+        business: userbusiness,
         status: usertype === ITypeUserEnum.ADMIN ? IStatusEnum.APPROVED : IStatusEnum.PENDING,
         code: generateUniqueCode(),
         deliveryAddress: {

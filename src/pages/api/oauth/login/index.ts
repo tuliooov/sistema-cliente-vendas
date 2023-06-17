@@ -18,6 +18,7 @@ export const config = {
 interface IDataRequest {
   email: string;
   password: string;
+  business: string;
 }
 
 
@@ -25,6 +26,7 @@ export interface IUser {
   id: string;
   email: string;
   name: string;
+  business: string;
   accessToken: string;
   type: ITypeUserEnum;
   createdAt: string
@@ -36,16 +38,18 @@ export interface IUser {
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "POST") {
     const requestBody = (await parseBody(req)) as any;
+    console.log("🚀 ~ file: index.ts:41 ~ consthandler:NextApiHandler= ~ requestBody:", requestBody)
 
-    const { email, password: pass } = requestBody.fields as IDataRequest;
+    const { email, password: pass, business } = requestBody.fields as IDataRequest;
 
-    if (!email || !pass) {
+    if (!email || !pass || !business) {
       return res.status(200).json({ error: `Formulário incompleto.` });
     }
     
-    const userFound = await prismaClient.user.findUnique({
+    const userFound = await prismaClient.user.findFirst({
       where: {
         email,
+        business,
       },
     });
 

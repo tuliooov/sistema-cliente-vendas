@@ -28,7 +28,7 @@ export default function ModalAddSeller({
   modalSettings,
 }: ModalAddSellerProps) {
   const methods = useForm<ISchemaCrudSeller>({
-    resolver: zodResolver(schemaAddSeller),
+    resolver: zodResolver(schemaAddSeller(modalSettings.type === 'add')),
   });
 
   const sourceRef = useRef(axios.CancelToken.source());
@@ -126,6 +126,7 @@ export default function ModalAddSeller({
             <FormCrudSeller
               loading={loading}
               disabledDefault={modalSettings.type === "view"}
+              modalSettings={modalSettings}
             />
           )}
         </DialogContent>

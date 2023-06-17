@@ -99,7 +99,7 @@ export default function TableProducts() {
         <Grid item xs={6} textAlign="end">
           {productsPage.create && (
             <Button variant="contained" onClick={handleAdd}>
-              Adicionar produtos
+              Adicionar
             </Button>
           )}
           {modalSettings.open && (

@@ -10,14 +10,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Business {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  business  String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
 model User {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  email     String    @unique
+  email     String
   name      String
   password  String
   type      String
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
+  business  String
 }
 
 model Client {
@@ -34,6 +42,7 @@ model Client {
   orders            Order[]
   createdAt         DateTime  @default(now())
   updatedAt         DateTime? @updatedAt
+  business          String
 }
 
 model Seller {
@@ -47,6 +56,7 @@ model Seller {
   orders      Order[]
   createdAt   DateTime       @default(now())
   updatedAt   DateTime?      @updatedAt
+  business    String
 }
 
 model AddressSeller {
@@ -93,6 +103,7 @@ model Order {
   updatedAt       DateTime?        @updatedAt
   total           Float?
   productOrder    ProductOrder[]
+  business        String
 }
 
 model Product {
@@ -102,6 +113,7 @@ model Product {
   createdAt    DateTime      @default(now())
   updatedAt    DateTime?     @updatedAt
   ProductOrder ProductOrder?
+  business     String
 }
 
 model ProductOrder {

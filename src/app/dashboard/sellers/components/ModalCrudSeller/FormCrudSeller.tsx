@@ -8,22 +8,26 @@ import { Divider, Typography } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 import { ISchemaCrudSeller } from "./schema";
 import { IncomingHttpHeaders } from "http";
+import { IModal } from "../TableSellers";
 
 export interface HeadersRequest extends IncomingHttpHeaders {
   userid?: string;
   usertype?: string;
   useremail?: string;
+  userbusiness?: string;
   authorization?: string;
 }
 
 interface FormCrudSellerProps {
   loading: boolean;
   disabledDefault: boolean;
+  modalSettings: IModal
 }
 
 export default function FormCrudSeller({
   loading = false,
   disabledDefault,
+  modalSettings
 }: FormCrudSellerProps) {
   const {
     register,
@@ -82,7 +86,7 @@ export default function FormCrudSeller({
               disabled={disabled}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          {modalSettings.type === 'add' && <Grid item xs={12} sm={6} md={4}>
             <TextField
               fullWidth
               id="password"
@@ -92,7 +96,7 @@ export default function FormCrudSeller({
               helperText={errors.seller?.password?.message}
               disabled={disabled}
             />
-          </Grid>
+          </Grid>}
           <Grid item xs={12} sm={6} md={4}>
             <TextField
               {...register("seller.cnpj")}

@@ -5,6 +5,7 @@ import prismaClient from "@/lib/prisma";
 import { middleware } from "@/utils/helper/middleware";
 import { ISchemaCrudSeller } from "@/app/dashboard/sellers/components/ModalCrudSeller/schema";
 import { createUser } from "../../oauth/register";
+import { HeadersRequest } from '@/app/dashboard/sellers/components/ModalCrudSeller/FormCrudSeller';
 
 export const config = {
   api: {
@@ -19,18 +20,20 @@ const handler: NextApiHandler = async (req, res) => {
     const requestBody = (await parseBody(req)) as any;
 
     const { seller, address } = requestBody.fields as ICreateSeller;
+    const { userbusiness } = req.headers as HeadersRequest
 
-    if (!seller || !address) {
+    if (!seller || !address || !userbusiness) {
       return res.status(200).json({ error: `Formulário incompleto.` });
     }
 
     const {password, ...restSeller} = seller
 
-    await findUser(restSeller.email, res)
+    await findUser(restSeller.email, userbusiness, res)
     
     const createdUser = await prismaClient.seller.create({
       data: {
         ...restSeller,
+        business: userbusiness,
         address: {
           create: {
             ...address,
@@ -43,7 +46,7 @@ const handler: NextApiHandler = async (req, res) => {
     });
 
 
-    await createUser(password, restSeller.name, restSeller.email, ITypeUserEnum.SELLER, res);
+    await createUser(password, restSeller.name, restSeller.email, ITypeUserEnum.SELLER, userbusiness, res);
 
     res.json({ done: "ok", data: createdUser });
   } else {

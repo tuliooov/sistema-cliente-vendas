@@ -121,17 +121,17 @@ export default function Dashboard({ children }: DashboardProps) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
+          {!!user.business && <Typography
             component="h1"
             variant="h6"
             color="inherit"
             noWrap
             sx={{ flexGrow: 1 }}
           >
-            DT Chapa Forte
-          </Typography>
+            {user.business}
+          </Typography>}
           <Grid display={"flex"} alignItems={"center"} gap={"1rem"}>
-            <Typography
+            {!!user?.name && <Typography
               component="p"
               variant="body1"
               color="inherit"
@@ -139,7 +139,7 @@ export default function Dashboard({ children }: DashboardProps) {
               sx={{ flexGrow: 1 }}
             >
               {user?.name}
-            </Typography>
+            </Typography>}
 
             <IconButton edge="end" color="inherit" onClick={logOut}>
               <LogoutIcon />

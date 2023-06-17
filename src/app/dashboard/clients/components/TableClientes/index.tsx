@@ -99,7 +99,7 @@ export default function TableClientes() {
         </Grid>
         <Grid item xs={6} textAlign="end">
           <Button variant="contained" onClick={handleAdd}>
-            Adicionar cliente
+            Adicionar
           </Button>
           {modalSettings.open && (
             <ModalAddClient

@@ -22,7 +22,9 @@ export default function RootLayout({
 }) {
   return (
     <html className={roboto.className} lang="pt-br">
-      <head />
+      <head >
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+      </head>
       <body>
         <SnackbarProvider SnackbarProps={{ autoHideDuration: 4000 }}>
           <UserProvider>

@@ -8,45 +8,67 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { ISchemaLogin } from "./schema";
+import { ISchemaLogin, schemaLogin } from "./schema";
 import axios from "axios";
 import { LoadingButton } from "@mui/lab";
 import { useUser } from "@/contexts/userContext";
-import { useRouter } from 'next/navigation';
-import { useEffect } from "react";
-
-
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import {
+  FormControl,
+  FormHelperText,
+  MenuItem,
+  NativeSelect,
+  Select,
+} from "@mui/material";
+import { IBusiness } from "@/pages/api/oauth/business";
 
 export default function SignInSide() {
-  const {push} = useRouter();
+  const { push } = useRouter();
 
-  const { register, handleSubmit } = useForm<ISchemaLogin>();
-  const [loading, setLoading] = React.useState(false);
-  const { changeUser, logOut } = useUser()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ISchemaLogin>({
+    resolver: zodResolver(schemaLogin),
+  });
+  const [business, setBusiness] = useState<IBusiness[]>([]);
+  const [loading, setLoading] = useState(false);
+  const { changeUser, logOut } = useUser();
 
   const onSubmit = async (data: ISchemaLogin) => {
-    console.log(data)
+    console.log(data);
     try {
       setLoading(true);
-      const response = await axios.post("/api/oauth/login", data, {
-        headers: {
-          "Content-Type": "application/json",
-        }
-      });
+      const response = await axios.post("/api/oauth/login", data);
       await changeUser(response.data.data);
-      push('/dashboard')
+      push("/dashboard");
     } catch (error) {
       console.warn("Post login: ", error);
       setLoading(false);
     }
   };
 
+  const fetchBusiness = async () => {
+    try {
+      const response = await axios.get("/api/oauth/business");
+      console.log("🚀 ~ file: page.tsx:55 ~ fetchBusiness ~ response:", response)
+      setBusiness(response.data.data);
+    } catch (error) {
+      console.warn("get business: ", error);
+    }
+  };
+
   useEffect(() => {
-    console.log("logout");
-    
-    logOut()
-  }, [logOut])
+    fetchBusiness();
+  }, []);
+
+  useEffect(() => {
+    logOut();
+  }, [logOut]);
 
   return (
     <>
@@ -55,11 +77,10 @@ export default function SignInSide() {
         <Grid
           item
           xs={false}
-          sm={4}
-          md={7}
+          sm={5}
+          md={8}
           sx={{
-            backgroundImage:
-              "url(/wallpaper.jpg)",
+            backgroundImage: "url(/wallpaper.jpg)",
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"
@@ -69,7 +90,7 @@ export default function SignInSide() {
             backgroundPosition: "center",
           }}
         />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Grid item xs={12} sm={7} md={4} component={Paper} elevation={6} square>
           <Box
             sx={{
               my: 8,
@@ -86,7 +107,10 @@ export default function SignInSide() {
               component="form"
               noValidate
               onSubmit={handleSubmit(onSubmit)}
-              sx={{ mt: 1 }}
+              display={"flex"}
+              flexDirection={"column"}
+              gap={"1rem"}
+              width={"100%"}
             >
               <TextField
                 {...register("email")}
@@ -98,6 +122,8 @@ export default function SignInSide() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                error={!!errors.email?.message}
+                helperText={errors.email?.message}
               />
               <TextField
                 {...register("password")}
@@ -109,7 +135,29 @@ export default function SignInSide() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                error={!!errors.password?.message}
+                helperText={errors.password?.message}
+
               />
+              <FormControl fullWidth>
+                <Select
+                  labelId={`business-select-label`}
+                  id={`business-select-label`}
+                  {...register("business")}
+                  label="Empresa"
+                >
+                  {business?.map((item) => (
+                    <MenuItem value={item.business} key={item.business}>
+                      {item.business}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {!!errors.business?.message && (
+                  <FormHelperText error>
+                    {errors.business.message}
+                  </FormHelperText>
+                )}
+              </FormControl>
               <LoadingButton
                 type="submit"
                 fullWidth

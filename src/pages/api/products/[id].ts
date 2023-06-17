@@ -2,6 +2,7 @@ import { IProduct } from "./index";
 import { NextApiHandler } from "next";
 import prismaSeller from "@/lib/prisma";
 import { middleware } from "@/utils/helper/middleware";
+import { HeadersRequest } from "@/app/dashboard/sellers/components/ModalCrudSeller/FormCrudSeller";
 
 export const config = {
   api: {
@@ -14,6 +15,7 @@ export type IProductComplete = IProduct;
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
     const { id } = req.query;
+    const { userbusiness } = req.headers as HeadersRequest
 
     if (!id) {
       return res
@@ -21,9 +23,10 @@ const handler: NextApiHandler = async (req, res) => {
         .json({ error: `Não identificamos o ID do Produto.` });
     }
 
-    const response = await prismaSeller.product.findUnique({
+    const response = await prismaSeller.product.findFirst({
       where: {
         id: id as string,
+        business: userbusiness
       },
     });
     res.json({ done: "ok", data: response });

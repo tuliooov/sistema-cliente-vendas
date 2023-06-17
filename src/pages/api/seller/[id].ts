@@ -3,6 +3,7 @@ import { NextApiHandler } from "next";
 import prismaSeller from "@/lib/prisma";
 import { IAddress } from "../address";
 import { middleware } from "@/utils/helper/middleware";
+import { HeadersRequest } from "@/app/dashboard/sellers/components/ModalCrudSeller/FormCrudSeller";
 
 export const config = {
   api: {
@@ -17,6 +18,7 @@ export type ISellerComplete = ISeller & {
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
     const { id } = req.query;
+    const { userbusiness } = req.headers as HeadersRequest
 
     if (!id) {
       return res
@@ -24,9 +26,10 @@ const handler: NextApiHandler = async (req, res) => {
         .json({ error: `Não identificamos o ID do Seller.` });
     }
 
-    const response = await prismaSeller.seller.findUnique({
+    const response = await prismaSeller.seller.findFirst({
       where: {
         id: id as string,
+        business: userbusiness
       },
       include: {
         address: true,

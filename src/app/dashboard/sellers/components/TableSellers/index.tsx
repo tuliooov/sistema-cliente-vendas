@@ -94,7 +94,7 @@ export default function TableSellers() {
         </Grid>
         <Grid item xs={6} textAlign="end">
           <Button variant="contained" onClick={handleAdd}>
-            Adicionar representante
+            Adicionar
           </Button>
           {modalSettings.open && (
             <ModalAddSeller

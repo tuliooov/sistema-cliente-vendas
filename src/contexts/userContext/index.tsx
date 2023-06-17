@@ -50,6 +50,7 @@ export const UserProvider = ({ children }: { children: any }) => {
     axios.defaults.headers.common["Authorization"] = user.accessToken;
     axios.defaults.headers.common["Content-Type"] = "application/json";
     axios.defaults.headers.common["userid"] = user?.id;
+    axios.defaults.headers.common["userbusiness"] = user?.business;
     axios.defaults.headers.common["usertype"] = user?.type;
     axios.defaults.headers.common["useremail"] = user?.email;
 

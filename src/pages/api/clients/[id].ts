@@ -3,6 +3,7 @@ import { NextApiHandler } from "next";
 import prismaClient from "@/lib/prisma";
 import { middleware } from "@/utils/helper/middleware";
 import { IAddress } from "../address";
+import { HeadersRequest } from "@/app/dashboard/sellers/components/ModalCrudSeller/FormCrudSeller";
 
 export const config = {
   api: {
@@ -17,6 +18,7 @@ export type IClientComplete = IClient & {
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
     const { id } = req.query;
+    const { userbusiness } = req.headers  as HeadersRequest
 
     if (!id) {
       return res
@@ -25,9 +27,10 @@ const handler: NextApiHandler = async (req, res) => {
     }
 
     console.log(id);
-    const response = await prismaClient.client.findUnique({
+    const response = await prismaClient.client.findFirst({
       where: {
         id: id as string,
+        business: userbusiness,
       },
       include: {
         address: true,

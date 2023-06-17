@@ -3,6 +3,7 @@ import { parseBody } from "@/utils/parseBody";
 import prismaClient from "@/lib/prisma";
 import { middleware } from "@/utils/helper/middleware";
 import { ISchemaCrudProduct } from "@/app/dashboard/products/components/ModalCrudProduct/schema";
+import { HeadersRequest } from "@/app/dashboard/sellers/components/ModalCrudSeller/FormCrudSeller";
 
 export const config = {
   api: {
@@ -17,8 +18,9 @@ const handler: NextApiHandler = async (req, res) => {
     const requestBody = (await parseBody(req)) as any;
 
     const { name, stock } = requestBody.fields as ICreateProduct;
+    const { userbusiness } = req.headers as HeadersRequest
 
-    if (!name || !stock) {
+    if (!name || !stock || !userbusiness) {
       return res.status(200).json({ error: `Formulário incompleto.` });
     }
 
@@ -26,6 +28,7 @@ const handler: NextApiHandler = async (req, res) => {
       data: {
         name,
         stock,
+        business: userbusiness
       },
     });
 

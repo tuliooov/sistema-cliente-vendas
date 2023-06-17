@@ -37,9 +37,14 @@ export type IOrders = IOrder[];
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
 
-    const { usertype, useremail } = req.headers as HeadersRequest
+    const { usertype, useremail, userbusiness } = req.headers as HeadersRequest
 
     const argsFind: any = {
+      where: {
+        seller: {
+          business: userbusiness
+        }
+      },
       include: {
         deliveryAddress: true,
         client: true,
@@ -50,7 +55,8 @@ const handler: NextApiHandler = async (req, res) => {
     if(usertype === ITypeUserEnum.SELLER){
       argsFind.where = {
         seller: {
-          email: useremail
+          email: useremail,
+          business: userbusiness
         }
       }
     }

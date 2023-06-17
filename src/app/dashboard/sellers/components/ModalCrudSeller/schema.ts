@@ -1,13 +1,13 @@
 import { z } from "zod";
 
-export const schemaAddSeller = z.object({
+export const schemaAddSeller = (add = false) => z.object({
   id: z.string().optional(),
   seller: z.object({
     id: z.string().optional(),
     name: z.string().nonempty("O nome é obrigatório"),
     phone: z.string().nonempty("O telefone é obrigatório"),
     email: z.string().email("Insira um endereço de e-mail válido"),
-    password: z.string().nonempty("A senha é obrigatória"),
+    password: add ? z.string().nonempty("A senha é obrigatória") : z.string().optional(),
     cnpj: z.string().nonempty("Insira um cnpj válido"),
     observation: z.string().nonempty("A observação é obrigatório"),
   }),
@@ -23,4 +23,6 @@ export const schemaAddSeller = z.object({
   }),
 });
 
-export type ISchemaCrudSeller = z.infer<typeof schemaAddSeller>;
+const schema = schemaAddSeller()
+
+export type ISchemaCrudSeller = z.infer<typeof schema>;

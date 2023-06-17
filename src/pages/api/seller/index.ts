@@ -3,6 +3,7 @@ import prismaOrder from "@/lib/prisma";
 import { IOrders } from "../orders";
 import { IAddress } from "../address";
 import { middleware } from "@/utils/helper/middleware";
+import { HeadersRequest } from "@/app/dashboard/sellers/components/ModalCrudSeller/FormCrudSeller";
 
 export const config = {
   api: {
@@ -27,7 +28,13 @@ export type ISellers = ISeller[];
 
 const handler: NextApiHandler = async (req, res) => {
   if (req.method === "GET") {
+    const { userbusiness } = req.headers as HeadersRequest
+
+    
     const response = await prismaOrder.seller.findMany({
+      where:{
+        business: userbusiness
+      },
       include: {
         address: true,
       },

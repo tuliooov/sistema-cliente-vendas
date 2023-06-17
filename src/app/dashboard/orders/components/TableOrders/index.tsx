@@ -102,7 +102,7 @@ export default function TableOrders() {
         </Grid>
         <Grid item xs={6} textAlign="end">
           <Button variant="contained" onClick={handleAdd}>
-            Adicionar pedido
+            Adicionar
           </Button>
           {modalSettings.open && (
             <ModalAddOrder
