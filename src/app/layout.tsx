@@ -6,7 +6,6 @@ import { Roboto } from "@next/font/google";
 import { UserProvider } from "@/contexts/userContext";
 import { SnackbarProvider } from "material-ui-snackbar-provider";
 import { ThemeProvider, createTheme } from "@mui/material";
-import { useThemeDetector } from "@/contexts/useThemeDetector";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -15,15 +14,11 @@ const roboto = Roboto({
 
 
 
-
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
-  // const { isDarkTheme } = useThemeDetector()
 
   const theme = false ? createTheme({
     palette: {
@@ -35,6 +30,7 @@ export default function RootLayout({
     }
   })
 
+  
   return (
     <html className={roboto.className} lang="pt-br">
       <head>
